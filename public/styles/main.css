@@ -1,0 +1,155 @@
+:root {
+  --disabled-opacity: 0.8;
+  --disabled-cursor: not-allowed;
+  --disabled-background-color: #ededed;
+  --disabled-border-color: #c3c3c3;
+}
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url("/public/assets/fonts/Poppins-Regular.ttf") format("truetype"),
+    url("/public/assets/fonts/Poppins-Regular.eot") format("embedded-opentype"),
+    url("/public/assets/fonts/Poppins-Regular.woff") format("woff"),
+    url("/public/assets/fonts/Poppins-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* start reset CSSS */
+* {
+  font-family: Poppins-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+/* end reset CSSS */
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(85%);
+}
+
+button:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: var(--disabled-cursor);
+  background-color: var(--disabled-background-color);
+  color: rgba(255, 255, 255, 0.411);
+  border-color: var(--disabled-border-color);
+}
+
+.miniButton {
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+}
+
+.calculator-box {
+  height: 320px;
+  width: 230px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  outline: 1px solid #58565a;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+}
+
+.screen-top {
+  text-align: right;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  font-weight: 200;
+  align-self: flex-end;
+}
+
+.theme_button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 10px;
+  cursor: pointer;
+  border: 1px solid;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-weight: 900;
+}
+
+.deploy-date-text {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 8px;
+}
+
+/* safary only */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .calculator-box {
+      outline-style: none;
+    }
+  }
+} ;
