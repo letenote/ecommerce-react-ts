@@ -2,23 +2,29 @@ import React from "react";
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
 import Home from "../containers/home";
 import Login from "../containers/login";
-import Signup from "../containers/signup";
 import DashboardCheckout from "../containers/dashboard/checkout";
+import Navbar from '../componets/Navbar';
+import Store from '../containers/store';
+import Product from '../containers/product';
+import Fallback404 from '../componets/fallback/Fallback404';
 
 const AppRoutes: React.FC<{}> = () => {
   return (
     <BrowserRouter>
       <div>
-        <h1>Hello, React Router!</h1>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/store" element={<Store />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
           <Route path="/checkout" element={<DashboardCheckout />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="*" element={<Fallback404 />} />
         </Routes>
       </div>
     </BrowserRouter>

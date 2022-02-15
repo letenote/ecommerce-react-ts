@@ -1,5 +1,6 @@
 import React from "react";
 import "../public/styles/main.css";
+import "./styles/tailwind.css"
 import ReactDOM from "react-dom";
 import App from "./App";
 import { disableReactDevTools } from "./config/disableReactDevTools";
