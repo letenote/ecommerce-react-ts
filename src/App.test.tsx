@@ -26,26 +26,13 @@ describe("__REDUX_CONNECTED", () => {
   it('should render with given default "User" state from Redux store', () => {
     const getConfigReducer = store.getState().user;
     const expected = {
+      name: "",
       isAuthentication: false,
       carts: []
     };
 
     expect(getConfigReducer.isAuthentication).toEqual(expected.isAuthentication);
     expect(getConfigReducer.carts).toEqual(expected.carts);
-  })
-
-  // it('should render with given default "Screen" state from Redux store', () => {
-  //   const getOutputReducer = store.getState().screen;
-  //   const expected = {
-  //     output: "",
-  //     log: "",
-  //     isMinus: false,
-  //     isOperatorClick: false
-  //   };
-
-  //   expect(getOutputReducer.output).toEqual(expected.output);
-  //   expect(getOutputReducer.log).toEqual(expected.log);
-  //   expect(getOutputReducer.isMinus).toEqual(expected.isMinus);
-  //   expect(getOutputReducer.isOperatorClick).toEqual(expected.isOperatorClick);
-  // })
+    expect(getConfigReducer.name).toEqual(expected.name);
+  });
 });
