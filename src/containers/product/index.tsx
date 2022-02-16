@@ -25,6 +25,7 @@ import React, { useState } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
 import Breadcrumbs from '../../componets/Breadcrumbs';
+import { useSearchParams } from 'react-router-dom';
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
@@ -84,9 +85,11 @@ function classNames(...classes: Array<string>) {
 }
 
 const Product: React.FC<{}> = () => {
+  const [searchParams] = useSearchParams();
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
-
+  const getParamsId = searchParams.get("id")
+  console.log("Product", { getParamsId })
   return (
     <div className="bg-white">
       <div className="pt-6">

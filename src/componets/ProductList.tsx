@@ -17,6 +17,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import slugify from 'slugify';
 
 interface Product {
   id: string,
@@ -51,7 +52,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, title = "title here
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <Link to={`/stores/${product.id}`}>
+                    <Link to={`/stores/${slugify(product.name, { replacement: "-", lower: true, trim: true })}?id=${product.id}`}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {product.name}
                     </Link>
