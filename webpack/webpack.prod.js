@@ -60,6 +60,16 @@ module.exports = {
           name: "antd",
           chunks: "all",
         },
+        headlessui: {
+          test: /[\\/]node_modules[\\/](@headlessui)[\\/]/,
+          name: "headlessui",
+          chunks: "all",
+        },
+        heroicons: {
+          test: /[\\/]node_modules[\\/](@heroicons)[\\/]/,
+          name: "heroicons",
+          chunks: "all",
+        },
         core: {
           test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
           name: "core",
@@ -102,7 +112,7 @@ module.exports = {
       // },
       {
         test: /\.(css|s[ac]ss)$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader", "postcss-loader",],
       },
       {
         test: /\.less$/,
