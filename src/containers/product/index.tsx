@@ -1,39 +1,13 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        gridTemplateRows: {
-          '[auto,auto,1fr]': 'auto auto 1fr',
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
 import React, { useState } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
 import Breadcrumbs from '../../componets/Breadcrumbs';
 import { useSearchParams } from 'react-router-dom';
+import { TestId } from '../../constant/TestId';
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
   href: '#',
-  // breadcrumbs: [
-  //   { id: 1, name: 'Men', href: '#' },
-  //   { id: 2, name: 'Clothing', href: '#' },
-  // ],
   images: [
     {
       src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
@@ -88,11 +62,11 @@ const Product: React.FC<{}> = () => {
   const [searchParams] = useSearchParams();
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
-  const getParamsId = searchParams.get("id")
-  console.log("Product", { getParamsId })
+  const getParamsId = searchParams.get("id");
   return (
     <div className="bg-white">
       <div className="pt-6">
+        <div data-testid={TestId.containers.product.id} style={{ display: "none" }}>{TestId.containers.product.value}</div>
         <Breadcrumbs />
 
         {/* Image gallery */}

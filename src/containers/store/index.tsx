@@ -1,5 +1,6 @@
 import React from "react";
 import ProductList from '../../componets/ProductList';
+import { TestId } from "../../constant/TestId";
 
 const products = [
   {
@@ -44,6 +45,7 @@ const products = [
 const Store: React.FC<{}> = () => {
   return (
     <div>
+      <div data-testid={TestId.containers.stores.id} style={{ display: "none" }}>{TestId.containers.stores.value}</div>
       <ProductList
         title={"Store"}
         products={products}

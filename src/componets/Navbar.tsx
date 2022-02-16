@@ -1,125 +1,27 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
 import React from 'react';
-import { Fragment, useState } from 'react'
-import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
-import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
-import { Disclosure, Menu } from '@headlessui/react'
-import { BellIcon } from '@heroicons/react/outline'
-import { Link, useLocation, useMatch, useResolvedPath } from 'react-router-dom'
+import { useState } from 'react'
+import { Popover } from '@headlessui/react'
+import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline'
+import { TestId } from '../constant/TestId';
+import { Link } from 'react-router-dom'
 import Carts from '../componets/Carts';
-
-const navigation = {
-  pages: [
-    { name: 'Home', href: '/' },
-    { name: 'Stores', href: '/stores' },
-  ],
-};
-
-interface LinkNavigationProps {
-  name: string;
-  href: string
-}
-
-const LinkNavigation: React.FC<LinkNavigationProps> = ({ name, href }) => {
-  const { pathname } = useLocation();
-  let getParentRoute = `/${pathname.split("/")[1]}`;
-  let custMatch = getParentRoute === href;
-  let resolved = useResolvedPath(href);
-  let match = useMatch({ path: resolved.pathname, end: true });
-  return (
-    <Link
-      to={href}
-      className={`flex items-center text-sm ${custMatch ? "font-black" : "font-medium"} text-gray-700 hover:text-gray-800`}
-    >
-      {name}
-    </Link>
-  )
-}
+import NavbarMobile from './NavbarMobile';
+import LinkNavigation from './LinkNavigation';
+import { Navigations } from '../constant/Navigations';
 
 const Navbar: React.FC<{}> = () => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [openMenuMobile, setOpenMenuMobile] = useState<boolean>(false);
   const [openCarts, setOpenCarts] = useState<boolean>(false);
 
   return (
     <div className="bg-white">
       {/* Start Mobile menu */}
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setOpen}>
-          <Transition.Child
-            as={Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <Transition.Child
-            as={Fragment}
-            enter="transition ease-in-out duration-300 transform"
-            enterFrom="-translate-x-full"
-            enterTo="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
-          >
-            <div className="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
-              <div className="px-4 pt-5 pb-2 flex">
-                <button
-                  type="button"
-                  className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400"
-                  onClick={() => setOpen(false)}
-                >
-                  <span className="sr-only">Close menu</span>
-                  <XIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div>
-
-              <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-                {navigation.pages.map((page) => (
-                  <div key={page.name} className="flow-root">
-                    <Link to={page.href} className="-m-2 p-2 block font-medium text-gray-900">
-                      {page.name}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-                <div className="flow-root">
-                  <Link to="/login" className="-m-2 p-2 block font-medium text-gray-900">
-                    Sign in
-                  </Link>
-                </div>
-                {/* <div className="flow-root">
-                  <Link to="#" className="-m-2 p-2 block font-medium text-gray-900">
-                    Create account
-                  </Link>
-                </div> */}
-              </div>
-
-            </div>
-          </Transition.Child>
-        </Dialog>
-      </Transition.Root>
+      <div data-testid={TestId.components.navbar.id} style={{ display: "none" }}>{TestId.components.navbar.value}</div>
+      <NavbarMobile
+        show={openMenuMobile}
+        navigations={Navigations}
+        setClose={() => setOpenMenuMobile(false)}
+      />
       {/* End Mobile menu */}
 
       <header className="relative bg-white">
@@ -132,8 +34,9 @@ const Navbar: React.FC<{}> = () => {
             <div className="h-16 flex items-center">
               <button
                 type="button"
+                data-testid={TestId.button.modal.main_menu_mobile.open}
                 className="bg-white p-2 rounded-md text-gray-400 lg:hidden"
-                onClick={() => setOpen(true)}
+                onClick={() => setOpenMenuMobile(true)}
                 style={{ width: 40 }}
               >
                 <span className="sr-only">Open menu</span>
@@ -155,7 +58,7 @@ const Navbar: React.FC<{}> = () => {
               {/* Flyout desktop menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="h-full flex space-x-8">
-                  {navigation.pages.map((page) => (
+                  {Navigations.map((page) => (
                     <LinkNavigation
                       key={page.name}
                       name={page.name}
@@ -168,7 +71,7 @@ const Navbar: React.FC<{}> = () => {
               {/* Signin | signup */}
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                  <Link to="/login" data-testid={TestId.button.nav.login} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Sign in
                   </Link>
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
@@ -190,9 +93,9 @@ const Navbar: React.FC<{}> = () => {
                   </Link> */}
                 </div>
 
-                {/* Cart */}
+                {/* Carts */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <button onClick={() => setOpenCarts(true)} className="group -m-2 p-2 flex items-center">
+                  <button data-testid={TestId.button.modal.carts.open} onClick={() => setOpenCarts(true)} className="group -m-2 p-2 flex items-center">
                     <ShoppingBagIcon
                       className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"

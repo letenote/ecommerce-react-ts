@@ -1,6 +1,7 @@
 import React from "react";
 import PromoSection from '../../componets/PromoSection'
 import ProductList from '../../componets/ProductList'
+import { TestId } from "../../constant/TestId";
 
 const products = [
   {
@@ -45,6 +46,7 @@ const products = [
 const Home: React.FC<{}> = () => {
   return (
     <div>
+      <div data-testid={TestId.containers.home.id} style={{ display: "none" }}>{TestId.containers.home.value}</div>
       <PromoSection />
       <div className="hidden sm:block" aria-hidden="true">
         <div className="py-5">

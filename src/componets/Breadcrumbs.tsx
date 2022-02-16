@@ -24,9 +24,7 @@ const Breadcrumbs: React.FC<{}> = () => {
       })
     };
 
-    joinBreadcrumbs(pathnameSplit)
-      .then((res) => setBreadcrumbs(res))
-      .catch(() => setBreadcrumbs([]))
+    joinBreadcrumbs(pathnameSplit).then((res) => setBreadcrumbs(res))
   }, []);
 
   return (

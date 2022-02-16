@@ -2,6 +2,8 @@
 import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
+import { Link } from 'react-router-dom'
+import { TestId } from '../constant/TestId'
 
 const products = [
   {
@@ -61,6 +63,7 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
               leaveTo="translate-x-full"
             >
               <div className="w-screen max-w-md">
+                <div data-testid={TestId.components.carts.id} style={{ display: "none" }}>{TestId.components.carts.value}</div>
                 <div className="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                   <div className="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
                     <div className="flex items-start justify-between">
@@ -68,6 +71,7 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                       <div className="ml-3 h-7 flex items-center">
                         <button
                           type="button"
+                          data-testid={TestId.button.modal.carts.close}
                           className="-m-2 p-2 text-gray-400 hover:text-gray-500"
                           onClick={onClose}
                         >
@@ -94,7 +98,7 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                                 <div>
                                   <div className="flex justify-between text-base font-medium text-gray-900">
                                     <h3>
-                                      <a href={product.href}>{product.name}</a>
+                                      <Link to={product.href}>{product.name}</Link>
                                     </h3>
                                     <p className="ml-4">{product.price}</p>
                                   </div>
@@ -124,12 +128,14 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
-                      <a
-                        href="/checkout"
+                      <Link
+                        to="/checkout"
+                        onClick={onClose}
+                        data-testid={TestId.button.nav.checkout}
                         className="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                       >
                         Checkout
-                      </a>
+                      </Link>
                     </div>
                     <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
                       <p>

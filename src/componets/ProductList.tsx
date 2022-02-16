@@ -1,20 +1,3 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import slugify from 'slugify';
@@ -31,9 +14,9 @@ interface Product {
 
 interface ProductListProps {
   products: Array<Product>,
-  title?: string
+  title: string
 }
-const ProductList: React.FC<ProductListProps> = ({ products, title = "title here" }) => {
+const ProductList: React.FC<ProductListProps> = ({ products, title }) => {
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
