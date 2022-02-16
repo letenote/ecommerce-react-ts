@@ -12,36 +12,42 @@ const renderWithRoutes = ({ route = '/' } = {}) => {
 const { containers, components, button } = TestId;
 
 describe("__ROUTES", () => {
-  it("app => home, force navigating then rendering", () => {
-    renderWithRoutes()
-    expect(screen.getByText(containers.home.value)).toBeInTheDocument();
+  it("app => home, force navigating then lazy rendering", async () => {
+    renderWithRoutes();
+    const lazyHome = await screen.findByText(containers.home.value);
+    expect(lazyHome).toBeInTheDocument();
   });
 
-  it("app => login, force navigating then rendering", () => {
-    renderWithRoutes({ route: '/login' })
-    expect(screen.getByText(containers.login.value)).toBeInTheDocument();
+  it("app => login, force navigating then lazy rendering", async () => {
+    renderWithRoutes({ route: '/login' });
+    const lazyLogin = await screen.findByText(containers.login.value);
+    expect(lazyLogin).toBeInTheDocument();
   });
 
-  it("app => stores, force navigating then rendering", () => {
-    renderWithRoutes({ route: '/stores' })
-    expect(screen.getByText(containers.stores.value)).toBeInTheDocument();
+  it("app => stores, force navigating then lazy rendering", async () => {
+    renderWithRoutes({ route: '/stores' });
+    let lazyStores = await screen.findByText(containers.stores.value);
+    expect(lazyStores).toBeInTheDocument();
   });
 
-  it("app => stores/slug, force navigating then rendering", async () => {
+  it("app => stores/slug, force navigating then lazy rendering", async () => {
     await act(async () => {
       renderWithRoutes({ route: '/stores/basic-tee-black?id=1' })
     });
-    expect(screen.getByText(containers.product.value)).toBeInTheDocument();
+    const lazyProductDetail = await screen.findByText(containers.product.value);
+    expect(lazyProductDetail).toBeInTheDocument();
   });
 
-  it("app => checkout, force navigating then rendering", () => {
+  it("app => checkout, force navigating then lazy rendering", async () => {
     renderWithRoutes({ route: '/checkout' })
-    expect(screen.getByText(containers.checkout.value)).toBeInTheDocument();
+    const lazyCheckout = await screen.findByText(containers.checkout.value);
+    expect(lazyCheckout).toBeInTheDocument();
   });
 
-  it("app => 404, force navigating then rendering bad page", () => {
-    renderWithRoutes({ route: '/something-that-does-not-match' })
-    expect(screen.getByText(containers.fallback404.value)).toBeInTheDocument()
+  it("app => 404, force navigating then lazy rendering bad page", async () => {
+    renderWithRoutes({ route: '/something-that-does-not-match' });
+    const lazyFallback404 = await screen.findByText(containers.fallback404.value);
+    expect(lazyFallback404).toBeInTheDocument();
   });
 
   it('landing on stores page triger by user', async () => {

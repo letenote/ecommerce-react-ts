@@ -5,7 +5,9 @@ const Layout: React.FC = ({ children = null }) => {
   return (
     <div>
       <Navbar />
-      {children}
+      <React.Suspense fallback="loading page ...">
+        {children}
+      </React.Suspense>
     </div>
   )
 }
