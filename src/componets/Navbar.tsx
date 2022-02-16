@@ -20,15 +20,36 @@ import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
 import { Disclosure, Menu } from '@headlessui/react'
 import { BellIcon } from '@heroicons/react/outline'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useMatch, useResolvedPath } from 'react-router-dom'
 import Carts from '../componets/Carts';
 
 const navigation = {
   pages: [
     { name: 'Home', href: '/' },
-    { name: 'Stores', href: '/store' },
+    { name: 'Stores', href: '/stores' },
   ],
 };
+
+interface LinkNavigationProps {
+  name: string;
+  href: string
+}
+
+const LinkNavigation: React.FC<LinkNavigationProps> = ({ name, href }) => {
+  const { pathname } = useLocation();
+  let getParentRoute = `/${pathname.split("/")[1]}`;
+  let custMatch = getParentRoute === href;
+  let resolved = useResolvedPath(href);
+  let match = useMatch({ path: resolved.pathname, end: true });
+  return (
+    <Link
+      to={href}
+      className={`flex items-center text-sm ${custMatch ? "font-black" : "font-medium"} text-gray-700 hover:text-gray-800`}
+    >
+      {name}
+    </Link>
+  )
+}
 
 const Navbar: React.FC<{}> = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -135,13 +156,11 @@ const Navbar: React.FC<{}> = () => {
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="h-full flex space-x-8">
                   {navigation.pages.map((page) => (
-                    <Link
+                    <LinkNavigation
                       key={page.name}
-                      to={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </Link>
+                      name={page.name}
+                      href={page.href}
+                    />
                   ))}
                 </div>
               </Popover.Group>

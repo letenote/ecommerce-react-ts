@@ -7,7 +7,7 @@ const Breadcrumbs: React.FC<{}> = () => {
       <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
         {[
           { id: 1, name: 'Home', href: '/' },
-          { id: 2, name: 'Store', href: '/store' },
+          { id: 2, name: 'Stores', href: '/stores' },
         ].map((breadcrumb) => (
           <li key={breadcrumb.id}>
             <div className="flex items-center">

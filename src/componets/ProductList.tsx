@@ -51,7 +51,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, title = "title here
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <Link to={`/product/${product.id}`}>
+                    <Link to={`/stores/${product.id}`}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {product.name}
                     </Link>
