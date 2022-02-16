@@ -1,25 +1,23 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useRoutes
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useRoutes } from "react-router-dom";
 import Layout from '../componets/Layout';
-import Home from "../containers/home";
-import Login from "../containers/login";
-import DashboardCheckout from "../containers/dashboard/checkout";
-import Store from '../containers/store';
-import Product from '../containers/product';
-import Fallback404 from '../componets/fallback/Fallback404';
+
+const LazyHome = React.lazy(() => import('../containers/home'));
+const LazyStore = React.lazy(() => import('../containers/store'));
+const LazyLogin = React.lazy(() => import('../containers/login'));
+const LazyProduct = React.lazy(() => import('../containers/product'));
+const LazyCheckout = React.lazy(() => import('../containers/dashboard/checkout'));
+const LazyFallback404 = React.lazy(() => import('../componets/fallback/Fallback404'));
 
 const AppRoutes: React.FC<{}> = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/*" element={<Nested />} />
-      </Routes>
+      <React.Suspense fallback="loading routes...">
+        <Routes>
+          <Route path="/login" element={<LazyLogin />} />
+          <Route path="/*" element={<React.Suspense fallback="loading layout ..."><Layout><Nested /></Layout></React.Suspense>} />
+        </Routes>
+      </React.Suspense>
     </BrowserRouter>
   )
 }
@@ -29,16 +27,16 @@ const Nested: React.FC<{}> = () => {
     {
       path: "",
       children: [
-        { path: "", element: <Layout><Home /></Layout> },
+        { path: "", element: <LazyHome /> },
         {
           path: "stores",
           children: [
-            { path: "", element: <Layout><Store /></Layout> },
-            { path: ":id", element: <Layout><Product /></Layout> }
+            { path: "", element: <LazyStore /> },
+            { path: ":id", element: <LazyProduct /> }
           ]
         },
-        { path: "checkout", element: <Layout><DashboardCheckout /></Layout> },
-        { path: "*", element: <Layout><Fallback404 /></Layout> }
+        { path: "checkout", element: <LazyCheckout /> },
+        { path: "*", element: <LazyFallback404 /> }
       ]
     }
   ]);
