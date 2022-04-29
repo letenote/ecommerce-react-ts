@@ -1,0 +1,4 @@
+export enum configActionType {
+  ADD_CONFIG_DELAY = "ADD_CONFIG_DELAY",
+  ADD_CONFIG_BANNERS = "ADD_CONFIG_BANNERS"
+};
