@@ -1,4 +1,5 @@
 export interface configReducerInterface {
+  loaded: boolean,
   delay: number,
   banners: {
     navbar: bannerNavbar
@@ -8,5 +9,7 @@ export interface configReducerInterface {
 export interface bannerNavbar {
   show: boolean,
   message: string,
-  href: string
+  href: string,
+  dismiss: boolean,
+  type: string
 }

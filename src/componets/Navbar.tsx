@@ -9,8 +9,18 @@ import NavbarMobile from './NavbarMobile';
 import LinkNavigation from './LinkNavigation';
 import { Navigations } from '../constant/Navigations';
 import BannerInNavbar from './banners/BannerInNavbar';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import * as configActionCreators from '../redux/actions/config-action';
+import { bindActionCreators } from 'redux';
 
 const Navbar: React.FC<{}> = () => {
+  const dispatch = useDispatch();
+  const { config } = useSelector((state: RootState) => state);
+  const { _setBannerInNavbarDismissAction } = bindActionCreators(
+    configActionCreators,
+    dispatch
+  );
   const [openMenuMobile, setOpenMenuMobile] = useState<boolean>(false);
   const [openCarts, setOpenCarts] = useState<boolean>(false);
 
@@ -27,8 +37,11 @@ const Navbar: React.FC<{}> = () => {
 
       <header className="relative bg-white">
         <BannerInNavbar
-          show={true}
-          type={"1"}
+          show={config.banners.navbar.show}
+          message={config.banners.navbar.message}
+          type={config.banners.navbar.type}
+          href={config.banners.navbar.href}
+          setDismiss={() => _setBannerInNavbarDismissAction()}
         />
 
         <nav aria-label="Top" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

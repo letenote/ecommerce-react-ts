@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PromoSection from '../../componets/PromoSection'
 import ProductList from '../../componets/ProductList'
 import { TestId } from "../../constant/TestId";
-
+import * as configActionCreators from '../../redux/actions/config-action';
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { idle } from "../../helper/idle";
+import { RootState } from "../../redux/store";
+import { fetchConfigData } from "./home.service";
 const products = [
   {
     id: "1",
@@ -44,6 +49,22 @@ const products = [
 ]
 
 const Home: React.FC<{}> = () => {
+  const dispatch = useDispatch();
+  const { config } = useSelector((state: RootState) => state);
+  const { _setDelayAction, _setBannersAction } = bindActionCreators(
+    configActionCreators,
+    dispatch
+  );
+
+  useEffect(() => {
+    const homeDidMount = async () => {
+      !config.loaded && await fetchConfigData(_setDelayAction, _setBannersAction);
+      await idle(1000)
+    }
+
+    homeDidMount();
+  }, []);
+
   return (
     <div>
       <div data-testid={TestId.containers.home.id} style={{ display: "none" }}>{TestId.containers.home.value}</div>
@@ -55,6 +76,7 @@ const Home: React.FC<{}> = () => {
       </div>
       <ProductList
         title={"Customers also purchased"}
+        loading={true}
         products={products}
       />
     </div>

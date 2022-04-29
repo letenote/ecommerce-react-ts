@@ -4,7 +4,8 @@ export const TestId = {
       home: "nav-home",
       stores: "nav-stores",
       login: "nav-login",
-      checkout: "nav-checkout"
+      checkout: "nav-checkout",
+      bannerDismiss: "nav-banner-dismiss"
     },
     modal: {
       carts: {
@@ -48,6 +49,10 @@ export const TestId = {
     navbar: {
       id: "component-navbar",
       value: "you are navbar"
+    },
+    navbarBanner: {
+      id: "component-banner-navbar",
+      value: "you are banner navbar"
     },
     carts: {
       id: "component-carts",
