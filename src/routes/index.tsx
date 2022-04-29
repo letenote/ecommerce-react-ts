@@ -14,8 +14,16 @@ const AppRoutes: React.FC<{}> = () => {
     <BrowserRouter>
       <React.Suspense fallback="loading routes...">
         <Routes>
-          <Route path="/login" element={<LazyLogin />} />
-          <Route path="/*" element={<React.Suspense fallback="loading layout ..."><Layout><Nested /></Layout></React.Suspense>} />
+          <Route
+            path="/*"
+            element={
+              <React.Suspense fallback="loading layout ...">
+                <Layout>
+                  <Nested />
+                </Layout>
+              </React.Suspense>
+            }
+          />
         </Routes>
       </React.Suspense>
     </BrowserRouter>
@@ -36,6 +44,7 @@ const Nested: React.FC<{}> = () => {
           ]
         },
         { path: "checkout", element: <LazyCheckout /> },
+        { path: "login", element: <LazyLogin /> },
         { path: "*", element: <LazyFallback404 /> }
       ]
     }

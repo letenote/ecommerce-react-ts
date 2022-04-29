@@ -8,6 +8,7 @@ import Carts from '../componets/Carts';
 import NavbarMobile from './NavbarMobile';
 import LinkNavigation from './LinkNavigation';
 import { Navigations } from '../constant/Navigations';
+import BannerInNavbar from './banners/BannerInNavbar';
 
 const Navbar: React.FC<{}> = () => {
   const [openMenuMobile, setOpenMenuMobile] = useState<boolean>(false);
@@ -25,9 +26,10 @@ const Navbar: React.FC<{}> = () => {
       {/* End Mobile menu */}
 
       <header className="relative bg-white">
-        <p className="bg-indigo-600 h-10 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">
-          Get free delivery on orders over $100
-        </p>
+        <BannerInNavbar
+          show={true}
+          type={"1"}
+        />
 
         <nav aria-label="Top" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-b border-gray-200">

@@ -32,7 +32,7 @@ describe("__REDUX_CONNECTED", () => {
     };
 
     expect(getConfigReducer.isAuthentication).toEqual(expected.isAuthentication);
-    expect(getConfigReducer.carts).toEqual(expected.carts);
+    expect(getConfigReducer.cart).toEqual(expected.carts);
     expect(getConfigReducer.name).toEqual(expected.name);
   });
 });

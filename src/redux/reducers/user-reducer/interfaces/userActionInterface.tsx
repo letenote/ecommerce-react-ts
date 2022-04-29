@@ -1,5 +1,5 @@
 import { userActionTypes } from '../action-types/userActionTypes';
-import { Product } from '../../products-reducer/interface/Product';
+import { Product } from '../../product-reducer/interface/Product';
 
 interface userLoginInterface {
   type: userActionTypes.USER_LOGIN,

@@ -1,7 +1,7 @@
-import { Product } from '../../products-reducer/interface/Product';
+import { Cart } from '../../cart-reducer/interface/Cart';
 
 export interface userReducerInterface {
   name: string;
   isAuthentication: boolean;
-  carts: Array<Product>
+  cart: Array<Cart>
 };
