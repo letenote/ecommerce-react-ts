@@ -24,15 +24,32 @@ describe("__REDUX_CONNECTED", () => {
   });
 
   it('should render with given default "User" state from Redux store', () => {
-    const getConfigReducer = store.getState().user;
+    const getUserReducer = store.getState().user;
     const expected = {
       name: "",
       isAuthentication: false,
       carts: []
     };
 
-    expect(getConfigReducer.isAuthentication).toEqual(expected.isAuthentication);
-    expect(getConfigReducer.cart).toEqual(expected.carts);
-    expect(getConfigReducer.name).toEqual(expected.name);
+    expect(getUserReducer.isAuthentication).toEqual(expected.isAuthentication);
+    expect(getUserReducer.cart).toEqual(expected.carts);
+    expect(getUserReducer.name).toEqual(expected.name);
+  });
+
+  it('should render with given default "Config" state from Redux store', () => {
+    const getConfigReducer = store.getState().config;
+    const expected = {
+      delay: 0,
+      banners: {
+        navbar: {
+          show: false,
+          message: "",
+          href: ""
+        }
+      }
+    };
+
+    expect(getConfigReducer.delay).toEqual(expected.delay);
+    expect(getConfigReducer.banners).toEqual(expected.banners);
   });
 });
