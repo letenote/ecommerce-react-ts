@@ -3,7 +3,7 @@ import { configActionType } from "../../reducers/config-reducer/action-types/con
 import { configActionInterface } from "../../reducers/config-reducer/interface/configActionInterface";
 import { bannerNavbar } from "../../reducers/config-reducer/interface/configReducerInterface";
 
-export const setDelayAction = (delay: number) => {
+export const _setDelayAction = (delay: number) => {
   return (dispatch: Dispatch<configActionInterface>) => {
     dispatch({
       type: configActionType.ADD_CONFIG_DELAY,
@@ -14,7 +14,7 @@ export const setDelayAction = (delay: number) => {
   };
 };
 
-export const setBannersAction = (navbar: bannerNavbar) => {
+export const _setBannersAction = (navbar: bannerNavbar) => {
   return (dispatch: Dispatch<configActionInterface>) => {
     dispatch({
       type: configActionType.ADD_CONFIG_BANNERS,
@@ -27,7 +27,7 @@ export const setBannersAction = (navbar: bannerNavbar) => {
   };
 };
 
-export const setBannerInNavbarDismissAction = () => {
+export const _setBannerInNavbarDismissAction = () => {
   return (dispatch: Dispatch<configActionInterface>) => {
     dispatch({
       type: configActionType.SET_BANNER_IN_NAVBAR_DISMISS

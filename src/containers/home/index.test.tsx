@@ -70,21 +70,13 @@ import App from "../../App";
 import userEvent from "@testing-library/user-event";
 import { TestId } from "../../constant/TestId";
 import { idle } from "../../helper/idle";
-const { containers, components, button } = TestId;
+import { configDataResponse } from "../../constant/response/configDataResponse";
+import { api } from "../../constant/response/api";
+const { components, button } = TestId;
 
 const mockAxios = new MockAdapter(axios);
-const API_URL = "https://jsonplaceholder.typicode.com/users"
-const data = {
-  delay: 2000,
-  navbar: {
-    show: true,
-    // message: "Get free delivery on orders over $100",
-    message: "Big news! We're excited to announce a brand new product.",
-    href: "/stores",
-    type: "2",
-    dismiss: false
-  }
-}
+const API_URL = api.url;
+const data = configDataResponse;
 const mockSpy = jest.spyOn(axios, "get");
 beforeEach(() => {
   mockSpy.mockClear();
@@ -131,7 +123,7 @@ describe("___HOME_CONTAINER_WITH_FETCH", () => {
     });
   });
 
-  test("success an API request to retrieve ", async () => {
+  test("success again an API request to retrieve ", async () => {
     mockAxios.resetHistory()
     mockAxios.reset()
     mockAxios.resetHandlers()

@@ -17,7 +17,7 @@ import { bindActionCreators } from 'redux';
 const Navbar: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { config } = useSelector((state: RootState) => state);
-  const { setBannerInNavbarDismissAction } = bindActionCreators(
+  const { _setBannerInNavbarDismissAction } = bindActionCreators(
     configActionCreators,
     dispatch
   );
@@ -41,7 +41,7 @@ const Navbar: React.FC<{}> = () => {
           message={config.banners.navbar.message}
           type={config.banners.navbar.type}
           href={config.banners.navbar.href}
-          setDismiss={() => setBannerInNavbarDismissAction()}
+          setDismiss={() => _setBannerInNavbarDismissAction()}
         />
 
         <nav aria-label="Top" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

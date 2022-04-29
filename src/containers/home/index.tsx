@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { idle } from "../../helper/idle";
 import { RootState } from "../../redux/store";
-import axios from "axios"
+import { fetchConfigData } from "./home.service";
 const products = [
   {
     id: "1",
@@ -51,45 +51,19 @@ const products = [
 const Home: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { config } = useSelector((state: RootState) => state);
-  const { setDelayAction, setBannersAction } = bindActionCreators(
+  const { _setDelayAction, _setBannersAction } = bindActionCreators(
     configActionCreators,
     dispatch
   );
+
   useEffect(() => {
-    // const fetchConfigData = async () => {
-    const data = {
-      delay: 2000,
-      navbar: {
-        show: true,
-        // message: "Get free delivery on orders over $100",
-        message: "Big news! We're excited to announce a brand new product.",
-        href: "/stores",
-        type: "2",
-        dismiss: false
-      }
-    }
-    //   await idle(2000);
-    //   return data;
-    // }
-    const fetchConfigData = async () => {
-      axios.get("https://jsonplaceholder.typicode.com/users")
-        .then((res) => (setDelayAction(data.delay), res))
-        .then((res) => setBannersAction(data.navbar))
-        .catch((err) => err)
+    const homeDidMount = async () => {
+      !config.loaded && await fetchConfigData(_setDelayAction, _setBannersAction);
+      await idle(1000)
     }
 
-    !config.loaded && fetchConfigData()
-    // .then((res) => (setDelayAction(res.delay), res))
-    // .then((res) => setBannersAction(res.navbar))
-    // .catch(err => console.error(err));
-
+    homeDidMount();
   }, []);
-
-  // const getConfigList = () => {
-  //   axios.get("https://jsonplaceholder.typicode.com/users")
-  //     .then((res) => res)
-  //     .catch((err) => err)
-  // }
 
   return (
     <div>
