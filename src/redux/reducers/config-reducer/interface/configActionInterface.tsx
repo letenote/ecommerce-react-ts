@@ -18,4 +18,10 @@ interface addBannersInterface {
   }
 };
 
-export type configActionInterface = addDelayInterface | addBannersInterface
+interface setBannerInNavbarDismissInterface {
+  type: configActionType.SET_BANNER_IN_NAVBAR_DISMISS
+}
+
+export type configActionInterface = addDelayInterface
+  | addBannersInterface
+  | setBannerInNavbarDismissInterface

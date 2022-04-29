@@ -39,17 +39,19 @@ describe("__REDUX_CONNECTED", () => {
   it('should render with given default "Config" state from Redux store', () => {
     const getConfigReducer = store.getState().config;
     const expected = {
+      loaded: false,
       delay: 0,
       banners: {
         navbar: {
           show: false,
           message: "",
-          href: ""
+          href: "",
+          dismiss: false,
+          type: ""
         }
       }
     };
 
-    expect(getConfigReducer.delay).toEqual(expected.delay);
-    expect(getConfigReducer.banners).toEqual(expected.banners);
+    expect(getConfigReducer).toEqual(expected);
   });
 });

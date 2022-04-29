@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PromoSection from '../../componets/PromoSection'
 import ProductList from '../../componets/ProductList'
 import { TestId } from "../../constant/TestId";
-
+import * as configActionCreators from '../../redux/actions/config-action';
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { idle } from "../../helper/idle";
+import { RootState } from "../../redux/store";
+import axios from "axios"
 const products = [
   {
     id: "1",
@@ -44,6 +49,48 @@ const products = [
 ]
 
 const Home: React.FC<{}> = () => {
+  const dispatch = useDispatch();
+  const { config } = useSelector((state: RootState) => state);
+  const { setDelayAction, setBannersAction } = bindActionCreators(
+    configActionCreators,
+    dispatch
+  );
+  useEffect(() => {
+    // const fetchConfigData = async () => {
+    const data = {
+      delay: 2000,
+      navbar: {
+        show: true,
+        // message: "Get free delivery on orders over $100",
+        message: "Big news! We're excited to announce a brand new product.",
+        href: "/stores",
+        type: "2",
+        dismiss: false
+      }
+    }
+    //   await idle(2000);
+    //   return data;
+    // }
+    const fetchConfigData = async () => {
+      axios.get("https://jsonplaceholder.typicode.com/users")
+        .then((res) => (setDelayAction(data.delay), res))
+        .then((res) => setBannersAction(data.navbar))
+        .catch((err) => err)
+    }
+
+    !config.loaded && fetchConfigData()
+    // .then((res) => (setDelayAction(res.delay), res))
+    // .then((res) => setBannersAction(res.navbar))
+    // .catch(err => console.error(err));
+
+  }, []);
+
+  // const getConfigList = () => {
+  //   axios.get("https://jsonplaceholder.typicode.com/users")
+  //     .then((res) => res)
+  //     .catch((err) => err)
+  // }
+
   return (
     <div>
       <div data-testid={TestId.containers.home.id} style={{ display: "none" }}>{TestId.containers.home.value}</div>
@@ -55,6 +102,7 @@ const Home: React.FC<{}> = () => {
       </div>
       <ProductList
         title={"Customers also purchased"}
+        loading={true}
         products={products}
       />
     </div>

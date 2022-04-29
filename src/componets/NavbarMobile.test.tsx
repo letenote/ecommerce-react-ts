@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../test-utils";
+import { render, waitFor } from "../test-utils";
 import userEvent from '@testing-library/user-event';
 import NavbarMobile from './NavbarMobile'
 import { BrowserRouter } from "react-router-dom";
@@ -22,10 +22,10 @@ beforeEach(() => {
 });
 
 describe("__COMPONENT_NAVBAR_MOBILE", () => {
-  test('Navbar Menu shows the children menu in Mobile and a close button', () => {
-    expect(container.getByText(components.main_menu_mobile.value)).toBeTruthy();
-    userEvent.click(container.getByTestId(button.modal.main_menu_mobile.close_button));
-    expect(handleClose).toHaveBeenCalledTimes(1);
+  test('Navbar Menu shows the children menu in Mobile and a close button', async () => {
+    expect(container.getByText(components.main_menu_mobile.value)).toBeTruthy()
+    userEvent.click(container.getByTestId(button.modal.main_menu_mobile.close_button))
+    expect(handleClose).toHaveBeenCalledTimes(1)
   });
 
   test('Navbar Menu shows the children menu in Mobile and a close dialog', () => {
