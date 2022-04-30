@@ -8,7 +8,10 @@ export interface configReducerInterface {
 
 export interface bannerNavbar {
   show: boolean,
-  message: string,
+  message: {
+    desktop: string,
+    mobile: string
+  },
   href: string,
   dismiss: boolean,
   type: string

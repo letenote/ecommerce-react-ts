@@ -65,13 +65,19 @@ const NavbarMobile: React.FC<NavbarMobileProps> = ({ show, setClose, navigations
                   key={page.name}
                   name={page.name}
                   href={page.href}
+                  onClick={() => setClose()}
                 />
               ))}
             </div>
 
             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
               <div className="flow-root">
-                <Link to="/login" data-testid={TestId.button.nav.login} className="-m-2 p-2 block font-medium text-gray-900">
+                <Link
+                  onClick={setClose}
+                  to="/login"
+                  data-testid={TestId.button.nav.login}
+                  className="-m-2 p-2 block font-medium text-gray-900"
+                >
                   Sign in
                 </Link>
               </div>

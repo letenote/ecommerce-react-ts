@@ -1,6 +1,7 @@
 export interface NavigationInterface {
   name: string;
   href: string;
+  onClick?: () => void
 }
 
 export let Navigations: Array<NavigationInterface>

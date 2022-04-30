@@ -1,3 +1,4 @@
 export const api = {
-  url: "https://jsonplaceholder.typicode.com/users"
+  config: "https://jsonplaceholder.typicode.com/users",
+  favorite: "https://jsonplaceholder.typicode.com/todos"
 }
