@@ -4,14 +4,28 @@ import { act, render, screen, waitFor } from "../test-utils";
 import userEvent from '@testing-library/user-event';
 import { TestId } from '../constant/TestId';
 import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+import { api } from "../constant/response/api";
+import { configDataResponse } from "../constant/response/configDataResponse";
 const renderWithRoutes = ({ route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route)
   return render(<App />)
 };
 
 const { containers, components, button } = TestId;
-// jest.mock('axios');
-// const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockAxios = new MockAdapter(axios);
+const API_URL = api;
+const data = configDataResponse;
+const mockSpy = jest.spyOn(axios, "get");
+beforeEach(() => {
+  mockSpy.mockClear();
+  // clear any previous calls to this spy mock
+});
+
+afterAll(() => {
+  mockSpy.mockRestore();
+  // restore spy mock to original Axios.get
+});
 
 describe("__ROUTES", () => {
   it("app => home, force navigating then lazy rendering", async () => {
@@ -101,5 +115,31 @@ describe("__ROUTES", () => {
     });
     userEvent.click(screen.getByTestId(button.nav.login));
     expect(screen.getByTestId(containers.login.id)).toHaveTextContent(containers.login.value)
+  });
+})
+
+describe("___ROUTES_WITH_FETCH", () => {
+  test("fails to make an API request config data", async () => {
+    mockAxios.onGet(API_URL.config).reply(404) // at first, it fails to fetch
+    render(<App />);
+
+    // using "waitFor" because submitting the form calls an async request
+    // therefore you need to "waitFor" the request to resolve
+    await waitFor(() => {
+      // expect(mockSpy).toHaveBeenCalledTimes(1);
+      const waitingGetConfigData = screen.queryByText(components.navbarBanner.value);
+      expect(waitingGetConfigData).not.toBeInTheDocument()
+    });
+  });
+
+  test("success an API request to config data ", async () => {
+    mockAxios.onGet(API_URL.config).reply(200, data);
+    render(<App />);
+
+    await waitFor(async () => {
+      expect(mockSpy).toHaveBeenCalledTimes(1);
+      const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
+      expect(waitingGetConfigData).toBeInTheDocument();
+    });
   });
 })

@@ -89,29 +89,29 @@ afterAll(() => {
 });
 
 describe("___HOME_CONTAINER_WITH_FETCH", () => {
-  test("fails to make an API request config data", async () => {
-    mockAxios.onGet(API_URL.config).reply(404) // at first, it fails to fetch
-    render(<App />);
+  // test("fails to make an API request config data", async () => {
+  //   mockAxios.onGet(API_URL.config).reply(404) // at first, it fails to fetch
+  //   render(<App />);
 
-    // using "waitFor" because submitting the form calls an async request
-    // therefore you need to "waitFor" the request to resolve
-    await waitFor(() => {
-      // expect(mockSpy).toHaveBeenCalledTimes(1);
-      const waitingGetConfigData = screen.queryByText(components.navbarBanner.value);
-      expect(waitingGetConfigData).not.toBeInTheDocument()
-    });
-  });
+  //   // using "waitFor" because submitting the form calls an async request
+  //   // therefore you need to "waitFor" the request to resolve
+  //   await waitFor(() => {
+  //     // expect(mockSpy).toHaveBeenCalledTimes(1);
+  //     const waitingGetConfigData = screen.queryByText(components.navbarBanner.value);
+  //     expect(waitingGetConfigData).not.toBeInTheDocument()
+  //   });
+  // });
 
-  test("success an API request to config data ", async () => {
-    mockAxios.onGet(API_URL.config).reply(200, data);
-    render(<App />);
+  // test("success an API request to config data ", async () => {
+  //   mockAxios.onGet(API_URL.config).reply(200, data);
+  //   render(<App />);
 
-    await waitFor(async () => {
-      expect(mockSpy).toHaveBeenCalledTimes(1);
-      const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
-      expect(waitingGetConfigData).toBeInTheDocument();
-    });
-  });
+  //   await waitFor(async () => {
+  //     expect(mockSpy).toHaveBeenCalledTimes(1);
+  //     const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
+  //     expect(waitingGetConfigData).toBeInTheDocument();
+  //   });
+  // });
 
   test("fails to make an API request favorite products", async () => {
     mockAxios.resetHistory()
