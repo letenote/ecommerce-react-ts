@@ -18,11 +18,29 @@ interface rejectAddFavoriteToProduct {
   }
 };
 
-interface addProductsToStores {
-  type: productActionTypes.ADD_PRODUCTS_TO_STORES,
+interface resolveAddProductsToStores {
+  type: productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_RESOLVE,
   payload: {
-    items: Array<Product>
+    items: Array<Product>,
+    status: number,
+    message: string
   }
 }
 
-export type productActionInterface = resolveAddFavoriteToProduct | rejectAddFavoriteToProduct | addProductsToStores
+interface rejectAddProductsToStores {
+  type: productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_REJECT,
+  payload: {
+    status: number,
+    message: string
+  }
+};
+
+interface resetProducts {
+  type: productActionTypes.RESET_VALUE_PRODUCTS
+}
+
+export type productActionInterface = resolveAddFavoriteToProduct
+  | rejectAddFavoriteToProduct
+  | resolveAddProductsToStores
+  | rejectAddProductsToStores
+  | resetProducts

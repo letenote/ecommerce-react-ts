@@ -2,37 +2,35 @@ import React, { useEffect, useState } from "react";
 import PromoSection from '../../componets/PromoSection'
 import ProductList from '../../componets/ProductList'
 import { TestId } from "../../constant/TestId";
-import * as configActionCreators from '../../redux/actions/config-action';
 import * as productActionCreators from '../../redux/actions/product-action';
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { idle } from "../../helper/idle";
 import { RootState } from "../../redux/store";
-import { fetchConfigData, fetchFavoritePodutcs } from "./home.service";
+import { fetchFavoritePodutcs } from "./index.service";
 
 const Home: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { config, products } = useSelector((state: RootState) => state);
-  const { _setDelayAction, _setBannersAction } = bindActionCreators(
-    configActionCreators,
-    dispatch
-  );
-  const { _resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct } = bindActionCreators(
+  const { _resetProducts, _resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct } = bindActionCreators(
     productActionCreators,
     dispatch
   );
 
   useEffect(() => {
     const homeDidMount = async () => {
-      await idle(1000)
-      !config.loaded && await fetchConfigData(_setDelayAction, _setBannersAction);
-      await idle(1000)
+      await idle(500)
       await fetchFavoritePodutcs(_resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct);
-      console.log("*")
     }
 
     homeDidMount();
-  }, []);
+  }, [config.loaded]);
+
+  useEffect(() => {
+    return () => {
+      _resetProducts()
+    }
+  }, [])
 
   return (
     <div>
