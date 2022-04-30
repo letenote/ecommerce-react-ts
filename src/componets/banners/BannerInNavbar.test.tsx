@@ -7,7 +7,8 @@ import BannerInNavbar from "./BannerInNavbar";
 
 const { components, button } = TestId;
 let container: any;
-let message: string = "sample test message"
+let desktopMessage: string = "sample test desktop message";
+let mobileMessage: string = "sample test mobile message"
 const handleDismiss = jest.fn();
 beforeEach(() => {
   container = render(
@@ -15,8 +16,8 @@ beforeEach(() => {
       <BannerInNavbar
         show={true}
         message={{
-          desktop: message,
-          mobile: message
+          desktop: desktopMessage,
+          mobile: mobileMessage
         }}
         type={"2"}
         href={"/stores"}
@@ -41,6 +42,7 @@ describe("__COMPONENT_BANNER_NAVBAR", () => {
   });
 
   test('renders message from props', () => {
-    expect(container.getByText(message)).toBeTruthy();
+    expect(container.getByText(desktopMessage)).toBeTruthy();
+    expect(container.getByText(mobileMessage)).toBeTruthy();
   });
 });

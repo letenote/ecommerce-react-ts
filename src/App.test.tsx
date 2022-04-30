@@ -44,7 +44,10 @@ describe("__REDUX_CONNECTED", () => {
       banners: {
         navbar: {
           show: false,
-          message: "",
+          message: {
+            desktop: "",
+            mobile: ""
+          },
           href: "",
           dismiss: false,
           type: ""
