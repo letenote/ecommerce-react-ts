@@ -1,19 +1,18 @@
 import axios from "axios";
 import { api } from "../../constant/response/api";
-import { _configSetBannerActionDispatchTypes, _configSetDelayActionDispatchTypes } from "../../redux/actions/config-action/dispatch-types";
 import { _setDelayAction, _setBannersAction } from '../../redux/actions/config-action';
 import { products } from "../../constant/response/products";
-import { _rejectAddFavoriteToProductDispatchTypes, _resolveAddFavoriteToProductDispatchTypes } from "../../redux/actions/product-action/dispatch-types";
+import { _rejectAddFavoriteToProductDispatchType, _resolveAddFavoriteToProductDispatchType } from "../../redux/actions/product-action/dispatch-types";
 
 /**
  * (helper) fetchFavoritePodutcs
- * @param _setFavoriteProdutcs: _addFavoriteToProductDispatchTypes 
- * @param _rejectAddFavoriteToProduct: _rejectAddFavoriteToProductDispatchTypes
+ * @param _setFavoriteProdutcs: _resolveAddFavoriteToProductDispatchType 
+ * @param _rejectAddFavoriteToProduct: _rejectAddFavoriteToProductDispatchType
  * @returns Promise<void>
  */
 export const fetchFavoritePodutcs = async (
-  _setFavoriteProdutcs: _resolveAddFavoriteToProductDispatchTypes,
-  _rejectAddFavoriteToProduct: _rejectAddFavoriteToProductDispatchTypes
+  _setFavoriteProdutcs: _resolveAddFavoriteToProductDispatchType,
+  _rejectAddFavoriteToProduct: _rejectAddFavoriteToProductDispatchType
 ): Promise<void> => {
   return axios.get(api.favorite)
     .then((res) => _setFavoriteProdutcs(products))

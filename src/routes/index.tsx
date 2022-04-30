@@ -24,7 +24,7 @@ const AppRoutes: React.FC<{}> = () => {
   );
   useEffect(() => {
     const homeDidMount = async () => {
-      await idle(1000)
+      // await idle(850)
       !config.loaded && await fetchConfigData(_setDelayAction, _setBannersAction);
     }
 

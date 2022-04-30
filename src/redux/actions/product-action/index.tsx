@@ -28,3 +28,36 @@ export const _rejectAddFavoriteToProduct = (fetchStatus: FetchStatus) => {
     });
   };
 };
+
+export const _resolveAddProductsToStores = (items: Array<Product>) => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_RESOLVE,
+      payload: {
+        items,
+        status: 200,
+        message: "ok"
+      }
+    });
+  };
+};
+
+export const _rejectAddProductsToStores = (fetchStatus: FetchStatus) => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_REJECT,
+      payload: {
+        status: fetchStatus.status,
+        message: fetchStatus.message
+      }
+    });
+  };
+};
+
+export const _resetProducts = () => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.RESET_VALUE_PRODUCTS
+    });
+  };
+};

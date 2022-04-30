@@ -17,15 +17,6 @@ const mockAxios = new MockAdapter(axios);
 const API_URL = api;
 const data = configDataResponse;
 const mockSpy = jest.spyOn(axios, "get");
-beforeEach(() => {
-  mockSpy.mockClear();
-  // clear any previous calls to this spy mock
-});
-
-afterAll(() => {
-  mockSpy.mockRestore();
-  // restore spy mock to original Axios.get
-});
 
 describe("__ROUTES", () => {
   it("app => home, force navigating then lazy rendering", async () => {
@@ -118,7 +109,17 @@ describe("__ROUTES", () => {
   });
 })
 
-describe("___ROUTES_WITH_FETCH", () => {
+describe("___ROUTE_WITH_FETCH", () => {
+  beforeEach(() => {
+    mockSpy.mockClear();
+    // clear any previous calls to this spy mock
+  });
+
+  afterAll(() => {
+    mockSpy.mockRestore();
+    // restore spy mock to original Axios.get
+  });
+
   test("fails to make an API request config data", async () => {
     mockAxios.onGet(API_URL.config).reply(404) // at first, it fails to fetch
     render(<App />);
@@ -126,7 +127,7 @@ describe("___ROUTES_WITH_FETCH", () => {
     // using "waitFor" because submitting the form calls an async request
     // therefore you need to "waitFor" the request to resolve
     await waitFor(() => {
-      // expect(mockSpy).toHaveBeenCalledTimes(1);
+      expect(mockSpy).toHaveBeenCalledTimes(1);
       const waitingGetConfigData = screen.queryByText(components.navbarBanner.value);
       expect(waitingGetConfigData).not.toBeInTheDocument()
     });
@@ -140,6 +141,33 @@ describe("___ROUTES_WITH_FETCH", () => {
       expect(mockSpy).toHaveBeenCalledTimes(1);
       const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
       expect(waitingGetConfigData).toBeInTheDocument();
+    });
+  });
+})
+
+describe("___ROUTES_RENDER_BANNER_IN_NAVBAR", () => {
+  beforeEach(async () => {
+    await act(async () => {
+      render(<App />);
+    });
+  });
+
+  test("App => Waiting get config data an rendering", async () => {
+    await waitFor(async () => {
+      const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
+      expect(waitingGetConfigData).toBeInTheDocument();
+    }, {
+      timeout: 20000
+    });
+  });
+
+  test("App => Waiting get config data after rendering dismiss button in banner navbar", async () => {
+    await waitFor(async () => {
+      const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
+      userEvent.click(screen.getByTestId(button.nav.bannerDismiss));
+      expect(waitingGetConfigData).not.toBeInTheDocument()
+    }, {
+      timeout: 20000
     });
   });
 })

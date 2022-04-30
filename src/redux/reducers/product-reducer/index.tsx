@@ -51,6 +51,54 @@ export const productsReducer = (state: productReducerInterface = initialState, a
         }
       };
 
+    case productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_RESOLVE:
+      return {
+        ...state,
+        stores: {
+          ...state.stores,
+          loading: false,
+          list: action.payload.items,
+          fetch: {
+            status: action.payload.status,
+            message: action.payload.message
+          }
+        }
+      };
+
+    case productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_REJECT:
+      return {
+        ...state,
+        stores: {
+          ...state.stores,
+          loading: false,
+          list: [],
+          fetch: {
+            status: action.payload.status,
+            message: action.payload.message
+          }
+        }
+      };
+
+    case productActionTypes.RESET_VALUE_PRODUCTS:
+      return {
+        favorite: {
+          loading: true,
+          list: [],
+          fetch: {
+            status: 0,
+            message: ""
+          }
+        },
+        stores: {
+          loading: true,
+          list: [],
+          fetch: {
+            status: 0,
+            message: ""
+          }
+        }
+      }
+
     default:
       return state
   }

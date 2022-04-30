@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { idle } from "../../helper/idle";
 import { RootState } from "../../redux/store";
-import { fetchFavoritePodutcs } from "./home.service";
+import { fetchFavoritePodutcs } from "./index.service";
 
 const Home: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state: RootState) => state);
+  const { config, products } = useSelector((state: RootState) => state);
   const { _resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct } = bindActionCreators(
     productActionCreators,
     dispatch
@@ -19,13 +19,12 @@ const Home: React.FC<{}> = () => {
 
   useEffect(() => {
     const homeDidMount = async () => {
-      await idle(1000)
+      await idle(500)
       await fetchFavoritePodutcs(_resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct);
-      console.log("*")
     }
 
     homeDidMount();
-  }, []);
+  }, [config.loaded]);
 
   return (
     <div>

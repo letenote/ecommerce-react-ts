@@ -64,59 +64,42 @@
 
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { screen, render, waitFor, act } from "../../test-utils";
+import { screen, render, waitFor } from "../../test-utils";
 import React from "react";
-import App from "../../App";
-import userEvent from "@testing-library/user-event";
 import { TestId } from "../../constant/TestId";
 import { idle } from "../../helper/idle";
 import { configDataResponse } from "../../constant/response/configDataResponse";
 import { api } from "../../constant/response/api";
-const { components, button } = TestId;
+import Home from ".";
+import { BrowserRouter } from "react-router-dom";
+const { components } = TestId;
 
 const mockAxios = new MockAdapter(axios);
 const API_URL = api;
 const data = configDataResponse;
 const mockSpy = jest.spyOn(axios, "get");
-beforeEach(() => {
-  mockSpy.mockClear();
-  // clear any previous calls to this spy mock
-});
-
-afterAll(() => {
-  mockSpy.mockRestore();
-  // restore spy mock to original Axios.get
-});
 
 describe("___HOME_CONTAINER_WITH_FETCH", () => {
-  // test("fails to make an API request config data", async () => {
-  //   mockAxios.onGet(API_URL.config).reply(404) // at first, it fails to fetch
-  //   render(<App />);
+  let container: any;
+  beforeEach(() => {
+    mockSpy.mockClear();
+    // clear any previous calls to this spy mock
+    container = render(
+      <BrowserRouter>
+        <Home />
+      </BrowserRouter>
+    );
+  });
 
-  //   // using "waitFor" because submitting the form calls an async request
-  //   // therefore you need to "waitFor" the request to resolve
-  //   await waitFor(() => {
-  //     // expect(mockSpy).toHaveBeenCalledTimes(1);
-  //     const waitingGetConfigData = screen.queryByText(components.navbarBanner.value);
-  //     expect(waitingGetConfigData).not.toBeInTheDocument()
-  //   });
-  // });
-
-  // test("success an API request to config data ", async () => {
-  //   mockAxios.onGet(API_URL.config).reply(200, data);
-  //   render(<App />);
-
-  //   await waitFor(async () => {
-  //     expect(mockSpy).toHaveBeenCalledTimes(1);
-  //     const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
-  //     expect(waitingGetConfigData).toBeInTheDocument();
-  //   });
-  // });
+  afterAll(() => {
+    mockSpy.mockRestore();
+    // restore spy mock to original Axios.get
+  });
 
   test("fails to make an API request favorite products", async () => {
-    mockAxios.resetHistory()
+    // mockAxios.resetHistory()
     mockAxios.onGet(API_URL.favorite).reply(404) // at first, it fails to fetch
-
+    // render(<App />);
     await waitFor(() => {
       const waitingGetConfigData = screen.queryByText(components.productList.value);
       expect(waitingGetConfigData).not.toBeInTheDocument()
@@ -129,47 +112,18 @@ describe("___HOME_CONTAINER_WITH_FETCH", () => {
     mockAxios.resetHandlers()
     mockAxios.restore()
     mockAxios.onGet(API_URL.favorite).reply(200, data);
-    render(<App />);
+    // render(<App />);
 
     await waitFor(async () => {
       const waitingGetConfigData = await screen.findByText(components.productList.value);
       expect(waitingGetConfigData).toBeInTheDocument();
-    }, {
-      timeout: 10000
     });
   });
 })
 
-describe("__HOME_CONTAINER", () => {
+describe("__HOME_CONTAINER_WITH_FALLBACK_LOADING", () => {
   test('show fallback loading page', async () => {
-    idle(2000)
-    render(<App />);
+    idle(1000)
     screen.findByText("loading page ...");
-  });
-
-  test("Home => Waiting get config data an rendering", async () => {
-    await act(async () => {
-      render(<App />);
-    });
-    await waitFor(async () => {
-      const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
-      expect(waitingGetConfigData).toBeInTheDocument();
-    }, {
-      timeout: 20000
-    });
-  });
-
-  test("Home => Waiting get config data after rendering dismiss button in banner navbar", async () => {
-    await act(async () => {
-      render(<App />);
-    });
-
-    await waitFor(async () => {
-      const waitingGetConfigData = await screen.findByText(components.navbarBanner.value);
-      userEvent.click(screen.getByTestId(button.nav.bannerDismiss));
-      expect(waitingGetConfigData).not.toBeInTheDocument()
-    }, {
-      timeout: 20000
-    });
   });
 });

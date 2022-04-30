@@ -1,17 +1,17 @@
 import axios from "axios"
 import { api } from "../constant/response/api"
 import { configDataResponse } from "../constant/response/configDataResponse"
-import { _configSetBannerActionDispatchTypes, _configSetDelayActionDispatchTypes } from "../redux/actions/config-action/dispatch-types"
+import { _configSetBannerActionDispatchType, _configSetDelayActionDispatchType } from "../redux/actions/config-action/dispatch-types"
 
 /**
  * (helper) fetchConfigData
- * @param _setDelay: _configSetDelayActionDispatchTypes 
- * @param _setBanners: _configSetBannerActionDispatchTypes 
+ * @param _setDelay: _configSetDelayActionDispatchType 
+ * @param _setBanners: _configSetBannerActionDispatchType 
  * @returns Promise<void>
  */
 export const fetchConfigData = async (
-  _setDelay: _configSetDelayActionDispatchTypes,
-  _setBanners: _configSetBannerActionDispatchTypes
+  _setDelay: _configSetDelayActionDispatchType,
+  _setBanners: _configSetBannerActionDispatchType
 ): Promise<void> => {
   return axios.get(api.config)
     .then(res => (_setDelay(configDataResponse.delay), res))
