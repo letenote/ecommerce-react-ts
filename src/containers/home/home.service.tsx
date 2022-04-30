@@ -34,8 +34,8 @@ export const fetchFavoritePodutcs = async (
 ): Promise<void> => {
   return axios.get(api.favorite)
     .then((res) => _setFavoriteProdutcs(products))
-    .catch((err) => {
-      if (process.env.NODE_ENV === "test") return err
-      _rejectAddFavoriteToProduct({ status: err.response.status, message: err.response.statusText })
-    })
+    .catch((err) => (
+      _rejectAddFavoriteToProduct({ status: err.response.status, message: err.response.statusText }),
+      err
+    ))
 }
