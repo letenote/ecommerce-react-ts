@@ -8,7 +8,10 @@ export const initialState = {
   banners: {
     navbar: {
       show: false,
-      message: "",
+      message: {
+        desktop: "",
+        mobile: ""
+      },
       href: "",
       dismiss: false,
       type: ""

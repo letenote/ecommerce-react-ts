@@ -17,16 +17,18 @@ const Home: React.FC<{}> = () => {
     configActionCreators,
     dispatch
   );
-  const { _addFavoriteToProduct } = bindActionCreators(
+  const { _resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct } = bindActionCreators(
     productActionCreators,
     dispatch
   );
 
   useEffect(() => {
     const homeDidMount = async () => {
+      await idle(1000)
       !config.loaded && await fetchConfigData(_setDelayAction, _setBannersAction);
       await idle(1000)
-      await fetchFavoritePodutcs(_addFavoriteToProduct);
+      await fetchFavoritePodutcs(_resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct);
+      console.log("*")
     }
 
     homeDidMount();
@@ -45,6 +47,7 @@ const Home: React.FC<{}> = () => {
         title={"Customers also purchased"}
         loading={products.favorite.loading}
         products={products.favorite.list}
+        fetchStatus={products.favorite.fetch}
       />
     </div>
   )

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import NavbarMobile from './NavbarMobile'
 import { BrowserRouter } from "react-router-dom";
 import { TestId } from "../constant/TestId";
-import { Navigations } from "../constant/Navigations";
+import { Navigations } from "../models/Navigations";
 
 const { components, button } = TestId;
 let container: any;

@@ -10,6 +10,10 @@ const Store: React.FC<{}> = () => {
         title={"Store"}
         loading={true}
         products={[]}
+        fetchStatus={{
+          status: 400,
+          message: ""
+        }}
       />
     </div>
   )

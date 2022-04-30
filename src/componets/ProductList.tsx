@@ -3,17 +3,20 @@ import { Link } from 'react-router-dom';
 import slugify from 'slugify';
 import { TestId } from '../constant/TestId';
 import { idrFormater } from '../helper/IdrFormater';
-import { Product } from '../redux/reducers/product-reducer/interface/Product';
+import { FetchStatus } from '../models/FetchStatus';
+import { Product } from '../models/Product';
 import FallbackLoading from './fallback/FallbackLoading';
 
 interface ProductListProps {
   products: Array<Product>,
   title: string,
-  loading: boolean
+  loading: boolean,
+  fetchStatus: FetchStatus
 }
-const ProductList: React.FC<ProductListProps> = ({ products = [], loading, title }) => {
-  if (loading) {
-    return <FallbackLoading message='Loading..' minHeight={"600px"} />
+const ProductList: React.FC<ProductListProps> = ({ products = [], loading, title, fetchStatus }) => {
+  if (loading) return <FallbackLoading message='Loading..' minHeight={"600px"} />
+  if (fetchStatus.status < 200 || fetchStatus.status >= 300 || fetchStatus.status >= 400 || fetchStatus.status >= 500) {
+    return <FallbackLoading message={"Terjadi Masalah"} minHeight={"600px"} />
   }
   return (
     <div className="bg-white">

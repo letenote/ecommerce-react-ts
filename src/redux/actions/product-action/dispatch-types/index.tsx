@@ -1,4 +1,5 @@
-import { _addFavoriteToProduct } from "..";
+import { _rejectAddFavoriteToProduct, _resolveAddFavoriteToProduct } from "..";
 
 
-export type _addFavoriteToProductDispatchTypes = typeof _addFavoriteToProduct
+export type _resolveAddFavoriteToProductDispatchTypes = typeof _resolveAddFavoriteToProduct;
+export type _rejectAddFavoriteToProductDispatchTypes = typeof _rejectAddFavoriteToProduct;

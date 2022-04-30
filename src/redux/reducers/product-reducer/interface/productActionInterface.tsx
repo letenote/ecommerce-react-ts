@@ -1,10 +1,20 @@
 import { productActionTypes } from "../action-types/productActionTypes"
-import { Product } from "./Product"
+import { Product } from "../../../../models/Product"
 
-interface addFavoriteToProduct {
-  type: productActionTypes.ADD_FAVORITE_PRODUCTS,
+interface resolveAddFavoriteToProduct {
+  type: productActionTypes.ADD_FAVORITE_PRODUCTS_WITH_RESOLVE,
   payload: {
-    items: Array<Product>
+    items: Array<Product>,
+    status: number,
+    message: string
+  }
+};
+
+interface rejectAddFavoriteToProduct {
+  type: productActionTypes.ADD_FAVORITE_PRODUCTS_WITH_REJECT,
+  payload: {
+    status: number,
+    message: string
   }
 };
 
@@ -15,4 +25,4 @@ interface addProductsToStores {
   }
 }
 
-export type productActionInterface = addFavoriteToProduct | addProductsToStores
+export type productActionInterface = resolveAddFavoriteToProduct | rejectAddFavoriteToProduct | addProductsToStores

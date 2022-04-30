@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Carts from '../componets/Carts';
 import NavbarMobile from './NavbarMobile';
 import LinkNavigation from './LinkNavigation';
-import { Navigations } from '../constant/Navigations';
+import { Navigations } from '../models/Navigations';
 import BannerInNavbar from './banners/BannerInNavbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -25,7 +25,7 @@ const Navbar: React.FC<{}> = () => {
   const [openCarts, setOpenCarts] = useState<boolean>(false);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" style={{ top: 0, "position": "sticky", zIndex: 1 }}>
       {/* Start Mobile menu */}
       <div data-testid={TestId.components.navbar.id} style={{ display: "none" }}>{TestId.components.navbar.value}</div>
       <NavbarMobile

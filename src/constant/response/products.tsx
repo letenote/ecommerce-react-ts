@@ -1,4 +1,4 @@
-import { Product, ProductSkuSize } from "../../redux/reducers/product-reducer/interface/Product"
+import { Product, ProductSkuSize } from "../../models/Product"
 
 export const products: Array<Product> = [
   {

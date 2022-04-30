@@ -14,7 +14,10 @@ beforeEach(() => {
     <BrowserRouter>
       <BannerInNavbar
         show={true}
-        message={message}
+        message={{
+          desktop: message,
+          mobile: message
+        }}
         type={"2"}
         href={"/stores"}
         setDismiss={() => handleDismiss()}

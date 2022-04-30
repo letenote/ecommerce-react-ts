@@ -3,8 +3,8 @@ import { api } from "../../constant/response/api";
 import { configDataResponse } from "../../constant/response/configDataResponse";
 import { _configSetBannerActionDispatchTypes, _configSetDelayActionDispatchTypes } from "../../redux/actions/config-action/dispatch-types";
 import { _setDelayAction, _setBannersAction } from '../../redux/actions/config-action';
-import { _addFavoriteToProductDispatchTypes } from "../../redux/actions/product-action/dispatch-types";
 import { products } from "../../constant/response/products";
+import { _rejectAddFavoriteToProductDispatchTypes, _resolveAddFavoriteToProductDispatchTypes } from "../../redux/actions/product-action/dispatch-types";
 
 /**
  * (helper) fetchConfigData
@@ -25,12 +25,17 @@ export const fetchConfigData = async (
 /**
  * (helper) fetchFavoritePodutcs
  * @param _setFavoriteProdutcs: _addFavoriteToProductDispatchTypes 
+ * @param _rejectAddFavoriteToProduct: _rejectAddFavoriteToProductDispatchTypes
  * @returns Promise<void>
  */
 export const fetchFavoritePodutcs = async (
-  _setFavoriteProdutcs: _addFavoriteToProductDispatchTypes
+  _setFavoriteProdutcs: _resolveAddFavoriteToProductDispatchTypes,
+  _rejectAddFavoriteToProduct: _rejectAddFavoriteToProductDispatchTypes
 ): Promise<void> => {
-  return axios.get(api.config)
+  return axios.get(api.favorite)
     .then((res) => _setFavoriteProdutcs(products))
-    .catch((err) => err)
+    .catch((err) => {
+      if (process.env.NODE_ENV === "test") return err
+      _rejectAddFavoriteToProduct({ status: err.response.status, message: err.response.statusText })
+    })
 }
