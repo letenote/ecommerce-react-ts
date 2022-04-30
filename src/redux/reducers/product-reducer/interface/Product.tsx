@@ -10,6 +10,7 @@ export interface Product {
 
 interface ProductImages {
   item: string,
+  alt: string,
   detail: Array<string>
 };
 
@@ -31,19 +32,19 @@ interface ProductCategory {
 interface ProductInventory {
   id: string,
   stock: number,
-  sku: [
-    {
-      size: ProductSkuSizeTypes,
-      quantity: number,
-      color: string
-    }
-  ],
+  sku: Array<SKU>,
   created_at: Date,
   update_at: Date,
   deleted_at: Date
 };
 
-enum ProductSkuSize {
+interface SKU {
+  size: ProductSkuSizeTypes,
+  quantity: number,
+  color: string
+}
+
+export enum ProductSkuSize {
   s, m, l, xl, xxl, xxxl
 };
 

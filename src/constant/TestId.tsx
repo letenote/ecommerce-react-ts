@@ -61,6 +61,10 @@ export const TestId = {
     main_menu_mobile: {
       id: "component-main-menu-mobile",
       value: "you are main menu mobile"
+    },
+    productList: {
+      id: "component-product-list",
+      value: "you are product list"
     }
   }
 }
