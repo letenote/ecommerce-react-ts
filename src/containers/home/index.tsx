@@ -12,7 +12,7 @@ import { fetchFavoritePodutcs } from "./index.service";
 const Home: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { config, products } = useSelector((state: RootState) => state);
-  const { _resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct } = bindActionCreators(
+  const { _resetProducts, _resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct } = bindActionCreators(
     productActionCreators,
     dispatch
   );
@@ -25,6 +25,12 @@ const Home: React.FC<{}> = () => {
 
     homeDidMount();
   }, [config.loaded]);
+
+  useEffect(() => {
+    return () => {
+      _resetProducts()
+    }
+  }, [])
 
   return (
     <div>

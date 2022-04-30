@@ -11,7 +11,7 @@ import { bindActionCreators } from "redux";
 const Store: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { config, products } = useSelector((state: RootState) => state);
-  const { _resolveAddProductsToStores, _rejectAddProductsToStores } = bindActionCreators(
+  const { _resetProducts, _resolveAddProductsToStores, _rejectAddProductsToStores } = bindActionCreators(
     productActionCreators,
     dispatch
   );
@@ -24,6 +24,13 @@ const Store: React.FC<{}> = () => {
 
     homeDidMount();
   }, [config.loaded]);
+
+  useEffect(() => {
+    return () => {
+      _resetProducts()
+    }
+  }, [])
+
   return (
     <div>
       <div data-testid={TestId.containers.stores.id} style={{ display: "none" }}>{TestId.containers.stores.value}</div>
