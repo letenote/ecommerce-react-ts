@@ -36,8 +36,20 @@ export const products: Array<Product> = [
         {
           size: ProductSkuSize.m,
           quantity: 20,
-          color: "black",
-          hexColor: "#000"
+          color: "grey",
+          hexColor: "#a9a7a8"
+        },
+        {
+          size: ProductSkuSize.m,
+          quantity: 20,
+          color: "white",
+          hexColor: "#ffffff"
+        },
+        {
+          size: ProductSkuSize.l,
+          quantity: 10,
+          color: "white",
+          hexColor: "#ffffff"
         },
         {
           size: ProductSkuSize.l,
