@@ -20,6 +20,15 @@ export const initialState = {
       code: "",
       message: ""
     }
+  },
+  detail: {
+    loading: false,
+    fetch: {
+      status: 0,
+      code: "",
+      message: ""
+    },
+    data: null
   }
 }
 
@@ -104,6 +113,15 @@ export const productsReducer = (state: productReducerInterface = initialState, a
             code: "",
             message: ""
           }
+        },
+        detail: {
+          loading: false,
+          fetch: {
+            status: 0,
+            code: "",
+            message: ""
+          },
+          data: null
         }
       }
 
