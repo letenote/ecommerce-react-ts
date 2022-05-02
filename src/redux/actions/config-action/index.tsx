@@ -1,27 +1,33 @@
 import { Dispatch } from "redux";
+import { FetchStatus } from "../../../models/FetchStatus";
 import { configActionType } from "../../reducers/config-reducer/action-types/configActionTypes.enum";
 import { configActionInterface } from "../../reducers/config-reducer/interface/configActionInterface";
 import { bannerNavbar } from "../../reducers/config-reducer/interface/configReducerInterface";
 
-export const _setDelayAction = (delay: number) => {
+export const _resolveGetConfigAction = (navbar: bannerNavbar) => {
   return (dispatch: Dispatch<configActionInterface>) => {
     dispatch({
-      type: configActionType.ADD_CONFIG_DELAY,
+      type: configActionType.RESOLVE_ADD_CONFIG_BANNERS,
       payload: {
-        delay
+        status: 200,
+        code: "OK",
+        message: "Success Get Config..",
+        banners: {
+          navbar
+        }
       }
     });
   };
 };
 
-export const _setBannersAction = (navbar: bannerNavbar) => {
+export const _rejectGetConfigAction = (fetchStatus: FetchStatus) => {
   return (dispatch: Dispatch<configActionInterface>) => {
     dispatch({
-      type: configActionType.ADD_CONFIG_BANNERS,
+      type: configActionType.REJECT_ADD_CONFIG_BANNERS,
       payload: {
-        banners: {
-          navbar
-        }
+        status: fetchStatus.status,
+        code: fetchStatus.code,
+        message: fetchStatus.message
       }
     });
   };

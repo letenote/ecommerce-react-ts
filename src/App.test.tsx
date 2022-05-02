@@ -40,7 +40,11 @@ describe("__REDUX_CONNECTED", () => {
     const getConfigReducer = store.getState().config;
     const expected = {
       loaded: false,
-      delay: 0,
+      fetch: {
+        status: 0,
+        code: "",
+        message: ""
+      },
       banners: {
         navbar: {
           show: false,

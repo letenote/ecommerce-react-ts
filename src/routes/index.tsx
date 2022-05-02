@@ -18,14 +18,14 @@ const LazyFallback404 = React.lazy(() => import('../componets/fallback/Fallback4
 const AppRoutes: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const { config } = useSelector((state: RootState) => state);
-  const { _setDelayAction, _setBannersAction } = bindActionCreators(
+  const { _resolveGetConfigAction, _rejectGetConfigAction } = bindActionCreators(
     configActionCreators,
     dispatch
   );
   useEffect(() => {
     const homeDidMount = async () => {
       // await idle(850)
-      !config.loaded && await fetchConfigData(_setDelayAction, _setBannersAction);
+      !config.loaded && await fetchConfigData(_resolveGetConfigAction, _rejectGetConfigAction);
     }
 
     homeDidMount();

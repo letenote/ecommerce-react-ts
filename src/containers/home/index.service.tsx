@@ -1,6 +1,5 @@
 import axios from "axios";
 import { api } from "../../constant/response/api";
-import { _setDelayAction, _setBannersAction } from '../../redux/actions/config-action';
 import { products } from "../../constant/response/products";
 import { _rejectAddFavoriteToProductDispatchType, _resolveAddFavoriteToProductDispatchType } from "../../redux/actions/product-action/dispatch-types";
 

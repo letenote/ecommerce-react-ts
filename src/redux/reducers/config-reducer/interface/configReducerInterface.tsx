@@ -1,6 +1,10 @@
 export interface configReducerInterface {
   loaded: boolean,
-  delay: number,
+  fetch: {
+    status: number,
+    code: string,
+    message: string
+  },
   banners: {
     navbar: bannerNavbar
   }
