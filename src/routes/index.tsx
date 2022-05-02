@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route, useRoutes } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import Layout from '../componets/Layout';
-import { idle } from "../helper/idle";
 import { RootState } from "../redux/store";
 import * as configActionCreators from '../redux/actions/config-action';
 import { fetchConfigData } from "./routes.service";
@@ -24,8 +23,7 @@ const AppRoutes: React.FC<{}> = () => {
   );
   useEffect(() => {
     const homeDidMount = async () => {
-      // await idle(850)
-      !config.loaded && await fetchConfigData(_resolveGetConfigAction, _rejectGetConfigAction);
+      !config.loaded && await fetchConfigData(_resolveGetConfigAction, _rejectGetConfigAction)
     }
 
     homeDidMount();
@@ -60,7 +58,7 @@ const Nested: React.FC<{}> = () => {
           path: "stores",
           children: [
             { path: "", element: <LazyStore /> },
-            { path: ":id", element: <LazyProduct /> }
+            { path: ":name", element: <LazyProduct /> }
           ]
         },
         { path: "checkout", element: <LazyCheckout /> },

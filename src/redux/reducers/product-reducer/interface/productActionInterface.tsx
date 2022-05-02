@@ -39,6 +39,24 @@ interface rejectAddProductsToStores {
   }
 };
 
+interface resolveAddProductToDetail {
+  type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE,
+  payload: {
+    product: Product,
+    status: number,
+    code: string,
+    message: string
+  }
+};
+interface rejectAddProductToDetail {
+  type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_REJECT,
+  payload: {
+    status: number,
+    code: string,
+    message: string
+  }
+};
+
 interface resetProducts {
   type: productActionTypes.RESET_VALUE_PRODUCTS
 }
@@ -47,4 +65,6 @@ export type productActionInterface = resolveAddFavoriteToProduct
   | rejectAddFavoriteToProduct
   | resolveAddProductsToStores
   | rejectAddProductsToStores
+  | resolveAddProductToDetail
+  | rejectAddProductToDetail
   | resetProducts

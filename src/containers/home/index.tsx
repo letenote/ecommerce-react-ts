@@ -24,7 +24,7 @@ const Home: React.FC<{}> = () => {
     }
 
     homeDidMount();
-  }, [config.loaded]);
+  }, []);
 
   useEffect(() => {
     return () => {

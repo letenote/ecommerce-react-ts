@@ -23,7 +23,7 @@ const Store: React.FC<{}> = () => {
     }
 
     homeDidMount();
-  }, [config.loaded]);
+  }, []);
 
   useEffect(() => {
     return () => {

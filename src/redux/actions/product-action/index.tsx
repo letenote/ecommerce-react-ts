@@ -58,6 +58,33 @@ export const _rejectAddProductsToStores = (fetchStatus: FetchStatus) => {
   };
 };
 
+export const _resolveAddProductToDetail = (product: Product) => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE,
+      payload: {
+        product: product,
+        status: 200,
+        code: "OK",
+        message: "Success"
+      }
+    });
+  };
+};
+
+export const _rejectAddProductToDetail = (fetchStatus: FetchStatus) => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_REJECT,
+      payload: {
+        status: fetchStatus.status,
+        code: fetchStatus.code,
+        message: fetchStatus.message
+      }
+    });
+  };
+};
+
 export const _resetProducts = () => {
   return (dispatch: Dispatch<productActionInterface>) => {
     dispatch({

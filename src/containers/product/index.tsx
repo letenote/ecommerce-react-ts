@@ -1,9 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
 import Breadcrumbs from '../../componets/Breadcrumbs';
 import { useSearchParams } from 'react-router-dom';
 import { TestId } from '../../constant/TestId';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { _resetProducts } from '../../redux/actions/product-action';
+import * as productActionCreators from '../../redux/actions/product-action';
+import { bindActionCreators } from 'redux';
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { products } from "../../constant/response/products";
+import { fetchProductDetail } from './index.service';
+import FallbackLoading from '../../componets/fallback/FallbackLoading';
+import { idrFormater } from '../../helper/IdrFormater';
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
@@ -60,9 +71,39 @@ function classNames(...classes: Array<string>) {
 
 const Product: React.FC<{}> = () => {
   const [searchParams] = useSearchParams();
+  const getParamsId = searchParams.get("id");
+  const dispatch = useDispatch();
+  const { config, products } = useSelector((state: RootState) => state);
+  const { _resetProducts, _resolveAddProductToDetail, _rejectAddProductToDetail } = bindActionCreators(
+    productActionCreators,
+    dispatch
+  );
+
+  useEffect(() => {
+    const homeDidMount = async () => {
+      await fetchProductDetail(
+        getParamsId ?? "xAerCF123123",
+        _resolveAddProductToDetail,
+        _rejectAddProductToDetail
+      );
+    }
+
+    homeDidMount();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      _resetProducts()
+    }
+  }, [])
+
+
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
-  const getParamsId = searchParams.get("id");
+
+
+  if (products.detail.loading) return <FallbackLoading message='Loading..' minHeight={"600px"} />
+  if (!products.detail.loading && products.detail.data === null) return <FallbackLoading message='Product Tidak Ditemukan' minHeight={"600px"} />
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -73,31 +114,31 @@ const Product: React.FC<{}> = () => {
         <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
           <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
             <img
-              src={product.images[0].src}
-              alt={product.images[0].alt}
+              src={products.detail.data?.images.detail[0]}
+              alt={products.detail.data?.images.alt}
               className="w-full h-full object-center object-cover"
             />
           </div>
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <img
-                src={product.images[1].src}
-                alt={product.images[1].alt}
+                src={products.detail.data?.images.detail[1]}
+                alt={products.detail.data?.images.alt}
                 className="w-full h-full object-center object-cover"
               />
             </div>
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <img
-                src={product.images[2].src}
-                alt={product.images[2].alt}
+                src={products.detail.data?.images.detail[2]}
+                alt={products.detail.data?.images.alt}
                 className="w-full h-full object-center object-cover"
               />
             </div>
           </div>
           <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
             <img
-              src={product.images[3].src}
-              alt={product.images[3].alt}
+              src={products.detail.data?.images.detail[3]}
+              alt={products.detail.data?.images.alt}
               className="w-full h-full object-center object-cover"
             />
           </div>
@@ -106,16 +147,16 @@ const Product: React.FC<{}> = () => {
         {/* Product info */}
         <div className="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{products.detail.data?.name}</h1>
           </div>
 
           {/* Options */}
           <div className="mt-4 lg:mt-0 lg:row-span-3">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl text-gray-900">{product.price}</p>
+            <p className="text-3xl text-gray-900">{idrFormater(products.detail.data?.price ?? 0)}</p>
 
             {/* Reviews */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
                 <div className="flex items-center">
@@ -135,7 +176,7 @@ const Product: React.FC<{}> = () => {
                   {reviews.totalCount} reviews
                 </a>
               </div>
-            </div>
+            </div> */}
 
             <form className="mt-10">
               {/* Colors */}
@@ -145,13 +186,13 @@ const Product: React.FC<{}> = () => {
                 <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
                   <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
                   <div className="flex items-center space-x-3">
-                    {product.colors.map((color) => (
+                    {products.detail.data?.inventory.sku.map((item) => (
                       <RadioGroup.Option
-                        key={color.name}
-                        value={color}
+                        key={item.color}
+                        value={item.color}
                         className={({ active, checked }) =>
                           classNames(
-                            color.selectedClass,
+                            "ring-gray-400", // <= harcode
                             active && checked ? 'ring ring-offset-1' : '',
                             !active && checked ? 'ring-2' : '',
                             '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none'
@@ -159,12 +200,12 @@ const Product: React.FC<{}> = () => {
                         }
                       >
                         <RadioGroup.Label as="p" className="sr-only">
-                          {color.name}
+                          {item.color}
                         </RadioGroup.Label>
                         <span
                           aria-hidden="true"
+                          style={{ backgroundColor: item.hexColor }}
                           className={classNames(
-                            color.class,
                             'h-8 w-8 border border-black border-opacity-10 rounded-full'
                           )}
                         />
@@ -186,14 +227,14 @@ const Product: React.FC<{}> = () => {
                 <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                   <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {product.sizes.map((size) => (
+                    {products.detail.data?.inventory.sku.map((item) => (
                       <RadioGroup.Option
-                        key={size.name}
-                        value={size}
-                        disabled={!size.inStock}
+                        key={item.size}
+                        value={item.size}
+                        disabled={item.quantity > 0 ? false : true}
                         className={({ active }) =>
                           classNames(
-                            size.inStock
+                            item.quantity > 0
                               ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
                               : 'bg-gray-50 text-gray-200 cursor-not-allowed',
                             active ? 'ring-2 ring-indigo-500' : '',
@@ -203,8 +244,8 @@ const Product: React.FC<{}> = () => {
                       >
                         {({ active, checked }) => (
                           <>
-                            <RadioGroup.Label as="p">{size.name}</RadioGroup.Label>
-                            {size.inStock ? (
+                            <RadioGroup.Label as="p">{item.size}</RadioGroup.Label>
+                            {item.quantity > 0 ? (
                               <div
                                 className={classNames(
                                   active ? 'border' : 'border-2',
@@ -251,7 +292,7 @@ const Product: React.FC<{}> = () => {
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{product.description}</p>
+                <p className="text-base text-gray-900">{products.detail.data?.description.preview}</p>
               </div>
             </div>
 
@@ -260,7 +301,7 @@ const Product: React.FC<{}> = () => {
 
               <div className="mt-4">
                 <ul role="list" className="pl-4 list-disc text-sm space-y-2">
-                  {product.highlights.map((highlight) => (
+                  {products.detail.data?.description.highlight.map((highlight) => (
                     <li key={highlight} className="text-gray-400">
                       <span className="text-gray-600">{highlight}</span>
                     </li>
@@ -273,7 +314,7 @@ const Product: React.FC<{}> = () => {
               <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
               <div className="mt-4 space-y-6">
-                <p className="text-sm text-gray-600">{product.details}</p>
+                <p className="text-sm text-gray-600">{products.detail.data?.description.details}</p>
               </div>
             </div>
           </div>

@@ -22,7 +22,7 @@ export const initialState = {
     }
   },
   detail: {
-    loading: false,
+    loading: true,
     fetch: {
       status: 0,
       code: "",
@@ -94,6 +94,35 @@ export const productsReducer = (state: productReducerInterface = initialState, a
         }
       };
 
+    case productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE:
+      return {
+        ...state,
+        detail: {
+          loading: false,
+          fetch: {
+            status: action.payload.status,
+            code: action.payload.code,
+            message: action.payload.message
+          },
+          data: action.payload.product
+        }
+      }
+
+    case productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_REJECT:
+      return {
+        ...state,
+        detail: {
+          ...state.detail,
+          loading: false,
+          fetch: {
+            status: action.payload.status,
+            code: action.payload.code,
+            message: action.payload.message
+          },
+          data: null
+        }
+      }
+
     case productActionTypes.RESET_VALUE_PRODUCTS:
       return {
         favorite: {
@@ -115,7 +144,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           }
         },
         detail: {
-          loading: false,
+          loading: true,
           fetch: {
             status: 0,
             code: "",

@@ -14,7 +14,7 @@ export const fetchConfigData = async (
   _rejectGetConfigAction: _rejectGetConfigActionDispatchType
 ): Promise<void> => {
   return axios.get(api.config)
-    .then(() => _resolveGetConfigAction(configDataResponse.navbar))
+    .then((res) => _resolveGetConfigAction(configDataResponse.navbar))
     .catch((err) => (
       process.env.NODE_ENV === "test" ? err : _rejectGetConfigAction({ status: err.response.status, code: err.code, message: err.message })
     ))
