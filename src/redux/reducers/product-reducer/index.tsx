@@ -8,6 +8,7 @@ export const initialState = {
     list: [],
     fetch: {
       status: 0,
+      code: "",
       message: ""
     }
   },
@@ -16,6 +17,7 @@ export const initialState = {
     list: [],
     fetch: {
       status: 0,
+      code: "",
       message: ""
     }
   }
@@ -32,6 +34,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: action.payload.items,
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -46,6 +49,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -60,6 +64,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: action.payload.items,
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -74,6 +79,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -86,6 +92,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: 0,
+            code: "",
             message: ""
           }
         },
@@ -94,6 +101,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: 0,
+            code: "",
             message: ""
           }
         }

@@ -11,7 +11,8 @@ export const _resolveAddFavoriteToProduct = (items: Array<Product>) => {
       payload: {
         items,
         status: 200,
-        message: "ok"
+        code: "OK",
+        message: "Success"
       }
     });
   };
@@ -23,6 +24,7 @@ export const _rejectAddFavoriteToProduct = (fetchStatus: FetchStatus) => {
       type: productActionTypes.ADD_FAVORITE_PRODUCTS_WITH_REJECT,
       payload: {
         status: fetchStatus.status,
+        code: fetchStatus.code,
         message: fetchStatus.message
       }
     });
@@ -36,7 +38,8 @@ export const _resolveAddProductsToStores = (items: Array<Product>) => {
       payload: {
         items,
         status: 200,
-        message: "ok"
+        code: "OK",
+        message: "Success"
       }
     });
   };
@@ -48,6 +51,7 @@ export const _rejectAddProductsToStores = (fetchStatus: FetchStatus) => {
       type: productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_REJECT,
       payload: {
         status: fetchStatus.status,
+        code: fetchStatus.code,
         message: fetchStatus.message
       }
     });

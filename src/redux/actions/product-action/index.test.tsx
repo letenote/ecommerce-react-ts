@@ -44,7 +44,7 @@ describe("__REDUX/ACTION/product-action", () => {
   });
 
   test("_ACTION: _rejectAddFavoriteToProduct", () => {
-    const rejectExpected = { status: 400, message: "Bad Request" }
+    const rejectExpected = { status: 404, code: "Bad Request", message: "fetch Bad Request" }
     _rejectAddFavoriteToProduct(rejectExpected);
     let getStoreReducerAfterSetProduct = store.getState().products.favorite;
     expect(getStoreReducerAfterSetProduct.loading).toEqual(false);
@@ -80,7 +80,7 @@ describe("__REDUX/ACTION/product-action", () => {
   });
 
   test("_ACTION: _rejectAddProductsToStores", () => {
-    const rejectExpected = { status: 400, message: "Bad Request" }
+    const rejectExpected = { status: 404, code: "Bad Request", message: "fetch Bad Request" }
     _rejectAddProductsToStores(rejectExpected);
     let getStoreReducerAfterSetProduct = store.getState().products.stores;
     expect(getStoreReducerAfterSetProduct.loading).toEqual(false);

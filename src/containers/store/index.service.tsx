@@ -10,7 +10,7 @@ export const fetchProducts = async (
   return axios.get(api.favorite)
     .then((res) => _resolveAddProductsToStores(products))
     .catch((err) => (
-      _rejectAddProductsToStores({ status: err.response.status, message: err.response.statusText }),
+      _rejectAddProductsToStores({ status: err.response.status, code: err.code, message: err.message }),
       err
     ))
 }

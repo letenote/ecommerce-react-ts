@@ -17,7 +17,7 @@ export const fetchFavoritePodutcs = async (
   return axios.get(api.favorite)
     .then((res) => _setFavoriteProdutcs(products))
     .catch((err) => (
-      _rejectAddFavoriteToProduct({ status: err.response.status, message: err.response.statusText }),
+      _rejectAddFavoriteToProduct({ status: err.response.status, code: err.code, message: err.message }),
       err
     ))
 }
