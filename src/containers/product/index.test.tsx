@@ -112,22 +112,6 @@ describe("__PRODUCT_CONTAINER_WITH_USER_INTERACTION_ADD_PRODUCT_TO_CART", () => 
     });
   });
 
-  // test("Simulate User add 3 product to cart", async () => {
-  //   await waitFor(async () => {
-  //     const addProductToCart = async (color: string, size: string) => {
-  //       const user = userEvent
-  //       await user.click(wrapper.getByText(color));
-  //       await user.click(wrapper.getByText(size));
-  //       user.click(wrapper.getByTestId(button.container.product.add_cart_button));
-  //     };
-
-  //     await addProductToCart('grey', 'm');
-  //     await addProductToCart('white', 'l')
-  //     const cartReducer = store.getState().cart.items;
-  //     expect(cartReducer.length).toBe(3)
-  //   });
-  // });
-
   test("Makesure value subtotal in cart bag, after add 3 product item in bag", async () => {
     await waitFor(async () => {
       // makesure current product in cart is 3 items
