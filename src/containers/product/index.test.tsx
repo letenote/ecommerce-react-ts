@@ -13,6 +13,7 @@ import Layout from '../../componets/Layout';
 import { sumOfNumbers } from '../../helper/sumOfNumbers';
 import * as productActionCreators from '../../redux/actions/cart-action/index';
 import { bindActionCreators } from 'redux';
+import { act } from 'react-dom/test-utils';
 
 const { _resetCartAction } = bindActionCreators(productActionCreators, store.dispatch);
 const { containers, components, button } = TestId;
@@ -91,36 +92,41 @@ describe("__PRODUCT_CONTAINER_WITH_USER_INTERACTION_ADD_PRODUCT_TO_CART", () => 
     });
   });
 
-  test("Simulate User Pick color - size product", async () => {
-    const addProductToCart = async () => {
-      const user = userEvent
-      await user.click(wrapper.getByText('black'))
-      await user.click(wrapper.getByText('s'))
-      user.click(wrapper.getByTestId(button.container.product.add_cart_button));
-    }
-
+  test("Simulate User Pick color - size product, if success add more 2 items to cart", async () => {
     await waitFor(async () => {
-      await addProductToCart()
-      const cartReducer = store.getState().cart.items
-      expect(cartReducer.length).toBe(1)
-    })
-  });
+      const addProductToCart = async (color: string, size: string) => {
+        const user = userEvent
+        await user.click(wrapper.getByText(color));
+        await user.click(wrapper.getByText(size));
+        user.click(wrapper.getByTestId(button.container.product.add_cart_button));
+      };
+      await addProductToCart('black', 's')
+      const cart1itemReducer = store.getState().cart.items
+      expect(cart1itemReducer.length).toBe(1);
 
-  test("Simulate User add 3 product to cart", async () => {
-    const addProductToCart = async (color: string, size: string) => {
-      const user = userEvent
-      await user.click(wrapper.getByText(color))
-      await user.click(wrapper.getByText(size))
-      user.click(wrapper.getByTestId(button.container.product.add_cart_button));
-    }
-
-    await waitFor(async () => {
+      // then simulate user add 2 items to cart
       await addProductToCart('grey', 'm');
       await addProductToCart('white', 'l')
-      const cartReducer = store.getState().cart.items;
-      expect(cartReducer.length).toBe(3)
-    })
+      const cart3ItemReducer = store.getState().cart.items;
+      expect(cart3ItemReducer.length).toBe(3)
+    });
   });
+
+  // test("Simulate User add 3 product to cart", async () => {
+  //   await waitFor(async () => {
+  //     const addProductToCart = async (color: string, size: string) => {
+  //       const user = userEvent
+  //       await user.click(wrapper.getByText(color));
+  //       await user.click(wrapper.getByText(size));
+  //       user.click(wrapper.getByTestId(button.container.product.add_cart_button));
+  //     };
+
+  //     await addProductToCart('grey', 'm');
+  //     await addProductToCart('white', 'l')
+  //     const cartReducer = store.getState().cart.items;
+  //     expect(cartReducer.length).toBe(3)
+  //   });
+  // });
 
   test("Makesure value subtotal in cart bag, after add 3 product item in bag", async () => {
     await waitFor(async () => {
