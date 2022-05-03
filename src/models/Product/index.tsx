@@ -41,14 +41,20 @@ interface ProductInventory {
 interface SKU {
   size: ProductSkuSizeTypes,
   quantity: number,
-  color: string
+  color: string,
+  hexColor: string
 }
 
 export enum ProductSkuSize {
-  s, m, l, xl, xxl, xxxl
+  s = "s",
+  m = "m",
+  l = "l",
+  xl = "xl",
+  xxl = "xxl",
+  xxxl = "xxxl"
 };
 
-type ProductSkuSizeTypes = ProductSkuSize.s
+export type ProductSkuSizeTypes = ProductSkuSize.s
   | ProductSkuSize.m
   | ProductSkuSize.l
   | ProductSkuSize.xl

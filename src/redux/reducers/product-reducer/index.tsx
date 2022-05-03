@@ -8,6 +8,7 @@ export const initialState = {
     list: [],
     fetch: {
       status: 0,
+      code: "",
       message: ""
     }
   },
@@ -16,8 +17,18 @@ export const initialState = {
     list: [],
     fetch: {
       status: 0,
+      code: "",
       message: ""
     }
+  },
+  detail: {
+    loading: true,
+    fetch: {
+      status: 0,
+      code: "",
+      message: ""
+    },
+    data: null
   }
 }
 
@@ -32,6 +43,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: action.payload.items,
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -46,6 +58,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -60,6 +73,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: action.payload.items,
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
@@ -74,10 +88,40 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: action.payload.status,
+            code: action.payload.code,
             message: action.payload.message
           }
         }
       };
+
+    case productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE:
+      return {
+        ...state,
+        detail: {
+          loading: false,
+          fetch: {
+            status: action.payload.status,
+            code: action.payload.code,
+            message: action.payload.message
+          },
+          data: action.payload.product
+        }
+      }
+
+    case productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_REJECT:
+      return {
+        ...state,
+        detail: {
+          ...state.detail,
+          loading: false,
+          fetch: {
+            status: action.payload.status,
+            code: action.payload.code,
+            message: action.payload.message
+          },
+          data: null
+        }
+      }
 
     case productActionTypes.RESET_VALUE_PRODUCTS:
       return {
@@ -86,6 +130,7 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: 0,
+            code: "",
             message: ""
           }
         },
@@ -94,8 +139,18 @@ export const productsReducer = (state: productReducerInterface = initialState, a
           list: [],
           fetch: {
             status: 0,
+            code: "",
             message: ""
           }
+        },
+        detail: {
+          loading: true,
+          fetch: {
+            status: 0,
+            code: "",
+            message: ""
+          },
+          data: null
         }
       }
 

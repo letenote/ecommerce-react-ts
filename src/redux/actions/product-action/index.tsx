@@ -11,7 +11,8 @@ export const _resolveAddFavoriteToProduct = (items: Array<Product>) => {
       payload: {
         items,
         status: 200,
-        message: "ok"
+        code: "OK",
+        message: "Success"
       }
     });
   };
@@ -23,6 +24,7 @@ export const _rejectAddFavoriteToProduct = (fetchStatus: FetchStatus) => {
       type: productActionTypes.ADD_FAVORITE_PRODUCTS_WITH_REJECT,
       payload: {
         status: fetchStatus.status,
+        code: fetchStatus.code,
         message: fetchStatus.message
       }
     });
@@ -36,7 +38,8 @@ export const _resolveAddProductsToStores = (items: Array<Product>) => {
       payload: {
         items,
         status: 200,
-        message: "ok"
+        code: "OK",
+        message: "Success"
       }
     });
   };
@@ -48,6 +51,34 @@ export const _rejectAddProductsToStores = (fetchStatus: FetchStatus) => {
       type: productActionTypes.ADD_PRODUCTS_TO_STORE_WITH_REJECT,
       payload: {
         status: fetchStatus.status,
+        code: fetchStatus.code,
+        message: fetchStatus.message
+      }
+    });
+  };
+};
+
+export const _resolveAddProductToDetail = (product: null | Product) => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE,
+      payload: {
+        product: product,
+        status: 200,
+        code: "OK",
+        message: "Success"
+      }
+    });
+  };
+};
+
+export const _rejectAddProductToDetail = (fetchStatus: FetchStatus) => {
+  return (dispatch: Dispatch<productActionInterface>) => {
+    dispatch({
+      type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_REJECT,
+      payload: {
+        status: fetchStatus.status,
+        code: fetchStatus.code,
         message: fetchStatus.message
       }
     });

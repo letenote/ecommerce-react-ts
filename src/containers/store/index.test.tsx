@@ -1,69 +1,59 @@
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
-import React from "react";
-import { api } from "../../constant/response/api";
-import { configDataResponse } from "../../constant/response/configDataResponse";
-import { TestId } from "../../constant/TestId";
-import { idle } from "../../helper/idle";
-import { screen, render, waitFor } from "../../test-utils";
-import Store from ".";
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import axios from 'axios';
+import { waitFor } from '@testing-library/dom';
+import { render } from "../../test-utils";
+import Store from './index'
+import { BrowserRouter } from 'react-router-dom';
+import { TestId } from '../../constant/TestId';
+import { products } from "../../constant/response/products";
 
-const { components } = TestId;
-
-const mockAxios = new MockAdapter(axios);
-const API_URL = api;
-const data = configDataResponse;
-const mockSpy = jest.spyOn(axios, "get");
+const { containers, components } = TestId;
+jest.mock('axios');
 
 describe("___STORE_CONTAINER_WITH_FETCH", () => {
-  let container: any;
   beforeEach(() => {
-    mockSpy.mockClear();
-    // clear any previous calls to this spy mock
-    container = render(
+    jest.clearAllMocks()
+  });
+
+  test('show fallback loading page and loading fetch data', async () => {
+    const productsResponse = products;
+    jest.spyOn(axios, 'get').mockResolvedValue({ data: productsResponse });
+    const wrapper = render(
       <BrowserRouter>
         <Store />
       </BrowserRouter>
     );
+    wrapper.findByText("loading page ...");
+    wrapper.findByText("Loading..");
   });
 
-  afterAll(() => {
-    mockSpy.mockRestore();
-    // restore spy mock to original Axios.get
+  test(`Show ${containers.stores.fetchRejectMessage} Message if response is Reject`, async () => {
+    jest.spyOn(axios, 'get').mockRejectedValue({
+      response: {
+        status: 404
+      },
+      code: "BADREQUEST",
+      message: "Badrequest error 404"
+    });
+    const wrapper = render(
+      <BrowserRouter>
+        <Store />
+      </BrowserRouter>
+    );
+    await waitFor(() => expect(wrapper.queryByText(containers.stores.fetchRejectMessage)).toBeInTheDocument());
   });
 
-  test("fails to make an API request products", async () => {
-    mockAxios.resetHistory()
-    mockAxios.onGet(API_URL.products).reply(404) // at first, it fails to fetch
-    // render(<App />);
+  test("Show Products if response is resolve", async () => {
+    const productsResponse = products;
+    jest.spyOn(axios, 'get').mockResolvedValue({ data: productsResponse });
+    const wrapper = render(
+      <BrowserRouter>
+        <Store />
+      </BrowserRouter>
+    );
 
     await waitFor(() => {
-      const waitingGetConfigData = screen.queryByText(components.productList.value);
-      expect(waitingGetConfigData).not.toBeInTheDocument()
+      return expect(wrapper.queryAllByText(components.productList.value)).toHaveLength(1)
     });
-  });
-
-  test("success an API request to products ", async () => {
-    mockAxios.resetHistory()
-    mockAxios.reset()
-    mockAxios.resetHandlers()
-    mockAxios.restore()
-    mockAxios.onGet(API_URL.products).reply(200, data);
-    // render(<App />);
-
-    await waitFor(async () => {
-      const waitingGetConfigData = await screen.findByText(components.productList.value);
-      expect(waitingGetConfigData).toBeInTheDocument();
-    }, {
-      timeout: 20000
-    });
-  });
-});
-
-describe("__STORE_CONTAINER_WITH_FALLBACK_LOADING", () => {
-  test('show fallback loading page', async () => {
-    idle(1000)
-    screen.findByText("loading page ...");
   });
 });

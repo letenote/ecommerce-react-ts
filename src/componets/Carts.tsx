@@ -1,33 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
-import React, { Fragment, useState } from 'react'
+/** https://flowbite.com/docs/getting-started/introduction/ */
+import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { TestId } from '../constant/TestId'
-
-const products = [
-  {
-    id: "4",
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-    quantity: 1,
-  },
-  {
-    id: "2",
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-    quantity: 1,
-  },
-  // More products...
-]
+import { idrFormater } from '../helper/IdrFormater'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import * as cartActionCreators from '../redux/actions/cart-action';
+import { bindActionCreators } from 'redux'
+import { sumOfNumbers } from '../helper/sumOfNumbers'
 
 interface CartsProps {
   show: boolean;
@@ -35,7 +18,12 @@ interface CartsProps {
 }
 
 const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
-
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state: RootState) => state);
+  const { _removeProductFromCartAction } = bindActionCreators(
+    cartActionCreators,
+    dispatch
+  );
   return (
     <Transition.Root show={show} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 overflow-hidden" onClose={onClose}>
@@ -49,10 +37,12 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay
+              className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            />
           </Transition.Child>
 
-          <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+          <div className="fixed inset-y-0 right-0 pl-0 max-w-full flex">
             <Transition.Child
               as={Fragment}
               enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -67,7 +57,7 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                 <div className="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                   <div className="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
                     <div className="flex items-start justify-between">
-                      <Dialog.Title className="text-lg font-medium text-gray-900">Shopping cart</Dialog.Title>
+                      <Dialog.Title className="text-lg font-medium text-gray-900">Keranjang Belanja</Dialog.Title>
                       <div className="ml-3 h-7 flex items-center">
                         <button
                           type="button"
@@ -84,38 +74,49 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                     <div className="mt-8">
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {products.map((product) => (
-                            <li key={product.id} className="py-6 flex">
-                              <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
-                                <img
-                                  src={product.imageSrc}
-                                  alt={product.imageAlt}
-                                  className="w-full h-full object-center object-cover"
-                                />
-                              </div>
-
-                              <div className="ml-4 flex-1 flex flex-col">
-                                <div>
-                                  <div className="flex justify-between text-base font-medium text-gray-900">
-                                    <h3>
-                                      <Link to={product.href}>{product.name}</Link>
-                                    </h3>
-                                    <p className="ml-4">{product.price}</p>
-                                  </div>
-                                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                          {
+                            cart.items.length > 0 && cart.items.map((product, productIndex) => (
+                              <li key={`${productIndex}-${product.product_id}`} className="py-6 flex">
+                                <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
+                                  <img
+                                    src={product.imageSrc}
+                                    alt={product.imageAlt}
+                                    className="w-full h-full object-center object-cover"
+                                  />
                                 </div>
-                                <div className="flex-1 flex items-end justify-between text-sm">
-                                  <p className="text-gray-500">Qty {product.quantity}</p>
 
-                                  <div className="flex">
-                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                      Remove
-                                    </button>
+                                <div className="ml-4 flex-1 flex flex-col">
+                                  <div>
+                                    <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <h3>
+                                        <Link
+                                          onClick={onClose}
+                                          to={product.href}
+                                        >
+                                          {product.product_name}
+                                        </Link>
+                                      </h3>
+                                      <p className="ml-4">{idrFormater(product.price)}</p>
+                                    </div>
+                                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                                  </div>
+                                  <div className="flex-1 flex items-end justify-between text-sm">
+                                    <p className="text-gray-500">Qty {product.quantity}</p>
+
+                                    <div className="flex">
+                                      <button
+                                        type="button"
+                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        onClick={() => _removeProductFromCartAction(product.product_id, productIndex)}
+                                      >
+                                        Hapus
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </li>
-                          ))}
+                              </li>
+                            ))
+                          }
                         </ul>
                       </div>
                     </div>
@@ -124,9 +125,20 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>
+                        {
+                          cart.items.length > 0
+                            ? idrFormater(
+                              sumOfNumbers(
+                                cart.items.map((item) => { return { price: item.price } })
+                              )
+                            )
+                            // ? idrFormater(cart.items.reduce((val, product) => val + product.price, 0))
+                            : 0
+                        }
+                      </p>
                     </div>
-                    <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                    <p className="mt-0.5 text-sm text-gray-500">Pengiriman dan pajak dihitung saat checkout.</p>
                     <div className="mt-6">
                       <Link
                         to="/checkout"
@@ -139,13 +151,13 @@ const Carts: React.FC<CartsProps> = ({ show, onClose }) => {
                     </div>
                     <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
                       <p>
-                        or{' '}
+                        atau{' '}
                         <button
                           type="button"
                           className="text-indigo-600 font-medium hover:text-indigo-500"
                           onClick={onClose}
                         >
-                          Continue Shopping<span aria-hidden="true"> &rarr;</span>
+                          Lanjutkan Belanja<span aria-hidden="true"> &rarr;</span>
                         </button>
                       </p>
                     </div>

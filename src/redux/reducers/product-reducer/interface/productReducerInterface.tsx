@@ -12,4 +12,9 @@ export interface productReducerInterface {
     list: Array<Product>,
     fetch: FetchStatus
   }
+  detail: {
+    loading: boolean,
+    fetch: FetchStatus,
+    data: null | Product
+  }
 }

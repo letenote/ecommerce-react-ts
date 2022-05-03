@@ -4,7 +4,11 @@ import { configReducerInterface } from "./interface/configReducerInterface";
 
 export const initialState = {
   loaded: false,
-  delay: 0,
+  fetch: {
+    status: 0,
+    code: "",
+    message: ""
+  },
   banners: {
     navbar: {
       show: false,
@@ -21,17 +25,27 @@ export const initialState = {
 
 export const configReducer = (state: configReducerInterface = initialState, action: configActionInterface) => {
   switch (action.type) {
-    case configActionType.ADD_CONFIG_DELAY:
-      return {
-        ...state,
-        delay: action.payload.delay
-      };
-
-    case configActionType.ADD_CONFIG_BANNERS:
+    case configActionType.RESOLVE_ADD_CONFIG_BANNERS:
       return {
         ...state,
         loaded: true,
-        banners: action.payload.banners
+        banners: action.payload.banners,
+        fetch: {
+          status: action.payload.status,
+          code: action.payload.code,
+          message: action.payload.message
+        }
+      };
+
+    case configActionType.REJECT_ADD_CONFIG_BANNERS:
+      return {
+        ...state,
+        loaded: false,
+        fetch: {
+          status: action.payload.status,
+          code: action.payload.code,
+          message: action.payload.message
+        }
       };
 
     case configActionType.SET_BANNER_IN_NAVBAR_DISMISS:

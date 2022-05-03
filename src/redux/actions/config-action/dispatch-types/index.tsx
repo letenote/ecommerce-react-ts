@@ -1,11 +1,11 @@
-import { _setBannerInNavbarDismissAction, _setBannersAction, _setDelayAction } from "..";
+import { _setBannerInNavbarDismissAction, _rejectGetConfigAction, _resolveGetConfigAction } from "..";
 
-export type _configSetDelayActionDispatchType = typeof _setDelayAction;
-export type _configSetBannerActionDispatchType = typeof _setBannersAction;
+export type _resolveGetConfigActionDispatchType = typeof _resolveGetConfigAction;
+export type _rejectGetConfigActionDispatchType = typeof _rejectGetConfigAction
 export type _configSetBannerInNavDismissActionDispatchType = typeof _setBannerInNavbarDismissAction
 
 export type _configActionDispatchTypes = ReturnType<
-  | typeof _setDelayAction
-  | typeof _setBannersAction
+  | typeof _resolveGetConfigAction
+  | typeof _rejectGetConfigAction
   | typeof _setBannerInNavbarDismissAction
 >;

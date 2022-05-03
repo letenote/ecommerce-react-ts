@@ -30,22 +30,50 @@ export const products: Array<Product> = [
         {
           size: ProductSkuSize.s,
           quantity: 20,
-          color: "black"
+          color: "black",
+          hexColor: "#000"
         },
         {
           size: ProductSkuSize.m,
           quantity: 20,
-          color: "black"
+          color: "grey",
+          hexColor: "#a9a7a8"
+        },
+        {
+          size: ProductSkuSize.m,
+          quantity: 20,
+          color: "white",
+          hexColor: "#ffffff"
         },
         {
           size: ProductSkuSize.l,
           quantity: 10,
-          color: "black"
+          color: "white",
+          hexColor: "#ffffff"
+        },
+        {
+          size: ProductSkuSize.l,
+          quantity: 10,
+          color: "black",
+          hexColor: "#000"
         },
         {
           size: ProductSkuSize.xl,
           quantity: 10,
-          color: "black"
+          color: "black",
+          hexColor: "#000"
+        },
+        {
+          size: ProductSkuSize.xxl,
+          quantity: 0,
+          color: "black",
+          hexColor: "#000"
+        },
+        {
+          size: ProductSkuSize.xxxl,
+          quantity: 0,
+          color: "black",
+          hexColor: "#000"
         }
       ],
       created_at: new Date(),
@@ -92,17 +120,20 @@ export const products: Array<Product> = [
         {
           size: ProductSkuSize.s,
           quantity: 10,
-          color: "yellow"
+          color: "yellow",
+          hexColor: "#e5ded4"
         },
         {
           size: ProductSkuSize.m,
           quantity: 10,
-          color: "yellow"
+          color: "yellow",
+          hexColor: "#e5ded4"
         },
         {
           size: ProductSkuSize.l,
           quantity: 10,
-          color: "yellow"
+          color: "yellow",
+          hexColor: "#e5ded4"
         }
       ],
       created_at: new Date(),
@@ -149,17 +180,20 @@ export const products: Array<Product> = [
         {
           size: ProductSkuSize.s,
           quantity: 10,
-          color: "grey"
+          color: "grey",
+          hexColor: "#a9a7a8"
         },
         {
           size: ProductSkuSize.m,
           quantity: 30,
-          color: "grey"
+          color: "grey",
+          hexColor: "#a9a7a8"
         },
         {
           size: ProductSkuSize.l,
           quantity: 10,
-          color: "grey"
+          color: "grey",
+          hexColor: "#a9a7a8"
         }
       ],
       created_at: new Date(),
@@ -206,17 +240,20 @@ export const products: Array<Product> = [
         {
           size: ProductSkuSize.s,
           quantity: 10,
-          color: "range"
+          color: "orange",
+          hexColor: "#f7ddce"
         },
         {
           size: ProductSkuSize.m,
           quantity: 10,
-          color: "range"
+          color: "orange",
+          hexColor: "#f7ddce"
         },
         {
           size: ProductSkuSize.l,
           quantity: 10,
-          color: "range"
+          color: "orange",
+          hexColor: "#f7ddce"
         }
       ],
       created_at: new Date(),

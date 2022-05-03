@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PromoSection from '../../componets/PromoSection'
 import ProductList from '../../componets/ProductList'
 import { TestId } from "../../constant/TestId";
 import * as productActionCreators from '../../redux/actions/product-action';
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { idle } from "../../helper/idle";
 import { RootState } from "../../redux/store";
 import { fetchFavoritePodutcs } from "./index.service";
 
@@ -19,12 +18,17 @@ const Home: React.FC<{}> = () => {
 
   useEffect(() => {
     const homeDidMount = async () => {
-      await idle(500)
       await fetchFavoritePodutcs(_resolveAddFavoriteToProduct, _rejectAddFavoriteToProduct);
-    }
-
+      // await axios.get(api.favorite)
+      // .then((res) => _resolveAddFavoriteToProduct(
+      //   process.env.NODE_ENV === "test"
+      //     ? res.data
+      //     : products
+      // ))
+      // .catch((err) => _rejectAddFavoriteToProduct({ status: err.response?.status, code: err.code, message: err.message }))
+    };
     homeDidMount();
-  }, [config.loaded]);
+  }, []);
 
   useEffect(() => {
     return () => {
