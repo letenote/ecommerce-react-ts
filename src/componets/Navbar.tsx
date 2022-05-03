@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react'
 import { Popover } from '@headlessui/react'
 import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline'
@@ -13,16 +13,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import * as configActionCreators from '../redux/actions/config-action';
 import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import { api } from '../constant/response/api';
+import { configDataResponse } from '../constant/response/configDataResponse';
 
 const Navbar: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const { config } = useSelector((state: RootState) => state);
-  const { _setBannerInNavbarDismissAction } = bindActionCreators(
+  const { config, cart } = useSelector((state: RootState) => state);
+  const { _setBannerInNavbarDismissAction, _resolveGetConfigAction, _rejectGetConfigAction } = bindActionCreators(
     configActionCreators,
     dispatch
   );
   const [openMenuMobile, setOpenMenuMobile] = useState<boolean>(false);
   const [openCarts, setOpenCarts] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getConfigData = async () => {
+      await axios.get(api.config)
+        .then((res) => _resolveGetConfigAction(
+          process.env.NODE_ENV === "test"
+            ? res.data
+            : configDataResponse.navbar
+        ))
+        .catch((err) => _rejectGetConfigAction({ status: err.response.status, code: err.code, message: err.message }))
+    };
+    !config.loaded && getConfigData()
+  }, [])
 
   return (
     <div className="bg-white" style={{ top: 0, "position": "sticky", zIndex: 1 }}>
@@ -115,7 +131,7 @@ const Navbar: React.FC<{}> = () => {
                       className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className={"ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"}>{cart.items.length}</span>
                     <span className="sr-only">items in cart, view bag</span>
                   </button>
                 </div>

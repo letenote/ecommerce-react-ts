@@ -1,4 +1,4 @@
-import { Cart } from "../../cart-reducer/interface/Cart";
+import { Cart } from "../../../../models/Cart"
 
 export interface Order {
   id: string,

@@ -54,7 +54,7 @@ export enum ProductSkuSize {
   xxxl = "xxxl"
 };
 
-type ProductSkuSizeTypes = ProductSkuSize.s
+export type ProductSkuSizeTypes = ProductSkuSize.s
   | ProductSkuSize.m
   | ProductSkuSize.l
   | ProductSkuSize.xl

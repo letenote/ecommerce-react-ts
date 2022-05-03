@@ -8,7 +8,9 @@ const {
   _resolveAddFavoriteToProduct,
   _rejectAddFavoriteToProduct,
   _resolveAddProductsToStores,
-  _rejectAddProductsToStores
+  _rejectAddProductsToStores,
+  _resolveAddProductToDetail,
+  _rejectAddProductToDetail
 } = bindActionCreators(
   productActionCreators,
   store.dispatch
@@ -86,6 +88,42 @@ describe("__REDUX/ACTION/product-action", () => {
     expect(getStoreReducerAfterSetProduct.loading).toEqual(false);
     expect(getStoreReducerAfterSetProduct.fetch.status).toEqual(rejectExpected.status);
     expect(getStoreReducerAfterSetProduct.list.length).toEqual(0);
+    expect(getStoreReducerAfterSetProduct.fetch.message).toEqual(rejectExpected.message);
+  })
+
+  test("_ACTION: _resolveAddProductToDetail if get not found product", async () => {
+    let getStoreReducerBeforeSetProduct = store.getState().products.detail;
+    expect(getStoreReducerBeforeSetProduct.loading).toEqual(true);
+    expect(getStoreReducerBeforeSetProduct.fetch.status).toEqual(0);
+    expect(getStoreReducerBeforeSetProduct.data).toEqual(null);
+
+    _resolveAddProductToDetail(null);
+    let getStoreReducerAfterSetProduct = store.getState().products.detail;
+    expect(getStoreReducerAfterSetProduct.loading).toEqual(false);
+    expect(getStoreReducerAfterSetProduct.fetch.status).toEqual(200);
+    expect(getStoreReducerAfterSetProduct.data).toEqual(null);
+  });
+
+  test("_ACTION: _resolveAddProductToDetail if get product", async () => {
+    let getStoreReducerBeforeSetProduct = store.getState().products.detail;
+    expect(getStoreReducerBeforeSetProduct.loading).toEqual(true);
+    expect(getStoreReducerBeforeSetProduct.fetch.status).toEqual(0);
+    expect(getStoreReducerBeforeSetProduct.data).toEqual(null);
+
+    _resolveAddProductToDetail(products[0]);
+    let getStoreReducerAfterSetProduct = store.getState().products.detail;
+    expect(getStoreReducerAfterSetProduct.loading).toEqual(false);
+    expect(getStoreReducerAfterSetProduct.fetch.status).toEqual(200);
+    expect(getStoreReducerAfterSetProduct.data).toEqual(products[0]);
+  });
+
+  test("_ACTION: _rejectAddProductToDetail", () => {
+    const rejectExpected = { status: 404, code: "Bad Request", message: "fetch Bad Request" }
+    _rejectAddProductToDetail(rejectExpected);
+    let getStoreReducerAfterSetProduct = store.getState().products.detail;
+    expect(getStoreReducerAfterSetProduct.loading).toEqual(false);
+    expect(getStoreReducerAfterSetProduct.fetch.status).toEqual(rejectExpected.status);
+    expect(getStoreReducerAfterSetProduct.data).toEqual(null);
     expect(getStoreReducerAfterSetProduct.fetch.message).toEqual(rejectExpected.message);
   })
 });

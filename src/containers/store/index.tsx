@@ -4,13 +4,12 @@ import ProductList from '../../componets/ProductList';
 import { TestId } from "../../constant/TestId";
 import { RootState } from "../../redux/store";
 import * as productActionCreators from '../../redux/actions/product-action';
-import { idle } from "../../helper/idle";
 import { fetchProducts } from "./index.service";
 import { bindActionCreators } from "redux";
 
 const Store: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const { config, products } = useSelector((state: RootState) => state);
+  const { products } = useSelector((state: RootState) => state);
   const { _resetProducts, _resolveAddProductsToStores, _rejectAddProductsToStores } = bindActionCreators(
     productActionCreators,
     dispatch
@@ -18,7 +17,6 @@ const Store: React.FC<{}> = () => {
 
   useEffect(() => {
     const homeDidMount = async () => {
-      await idle(1000)
       await fetchProducts(_resolveAddProductsToStores, _rejectAddProductsToStores);
     }
 

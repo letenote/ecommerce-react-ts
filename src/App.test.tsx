@@ -27,12 +27,10 @@ describe("__REDUX_CONNECTED", () => {
     const getUserReducer = store.getState().user;
     const expected = {
       name: "",
-      isAuthentication: false,
-      carts: []
+      isAuthentication: false
     };
 
     expect(getUserReducer.isAuthentication).toEqual(expected.isAuthentication);
-    expect(getUserReducer.cart).toEqual(expected.carts);
     expect(getUserReducer.name).toEqual(expected.name);
   });
 
@@ -60,5 +58,49 @@ describe("__REDUX_CONNECTED", () => {
     };
 
     expect(getConfigReducer).toEqual(expected);
+  });
+
+  it('should render with given default "Products" state from Redux store', () => {
+    const getProductsReducer = store.getState().products;
+    const expected = {
+      favorite: {
+        loading: true,
+        list: [],
+        fetch: {
+          status: 0,
+          code: "",
+          message: ""
+        }
+      },
+      stores: {
+        loading: true,
+        list: [],
+        fetch: {
+          status: 0,
+          code: "",
+          message: ""
+        }
+      },
+      detail: {
+        loading: true,
+        fetch: {
+          status: 0,
+          code: "",
+          message: ""
+        },
+        data: null
+      }
+    }
+
+    expect(getProductsReducer).toEqual(expected);
+  });
+
+  it('should render with given default "Carts" state from Redux store', () => {
+    const getCartReducer = store.getState().cart;
+    const expected = {
+      items: []
+    }
+
+    expect(getCartReducer).toEqual(expected);
   });
 });

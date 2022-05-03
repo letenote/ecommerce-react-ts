@@ -21,9 +21,4 @@ interface userSignupInterface {
   }
 }
 
-interface userAddItemToCartInterface {
-  type: userActionTypes.USER_ADD_ITEM_TO_CART,
-  payload: Product
-}
-
-export type userActionInterface = userLoginInterface | userLogoutInterface | userSignupInterface | userAddItemToCartInterface
+export type userActionInterface = userLoginInterface | userLogoutInterface | userSignupInterface 

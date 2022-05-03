@@ -42,7 +42,7 @@ interface rejectAddProductsToStores {
 interface resolveAddProductToDetail {
   type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE,
   payload: {
-    product: Product,
+    product: null | Product,
     status: number,
     code: string,
     message: string

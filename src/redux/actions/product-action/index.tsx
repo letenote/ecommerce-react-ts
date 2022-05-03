@@ -58,7 +58,7 @@ export const _rejectAddProductsToStores = (fetchStatus: FetchStatus) => {
   };
 };
 
-export const _resolveAddProductToDetail = (product: Product) => {
+export const _resolveAddProductToDetail = (product: null | Product) => {
   return (dispatch: Dispatch<productActionInterface>) => {
     dispatch({
       type: productActionTypes.ADD_PRODUCT_TO_DETAIL_WITH_RESOLVE,
