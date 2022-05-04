@@ -12,6 +12,7 @@ import BannerInNavbar from './banners/BannerInNavbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import * as configActionCreators from '../redux/actions/config-action';
+import * as userActionCreators from '../redux/actions/user-action';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { api } from '../constant/response/api';
@@ -19,9 +20,13 @@ import { configDataResponse } from '../constant/response/configDataResponse';
 
 const Navbar: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const { config, cart } = useSelector((state: RootState) => state);
+  const { config, cart, user } = useSelector((state: RootState) => state);
   const { _setBannerInNavbarDismissAction, _resolveGetConfigAction, _rejectGetConfigAction } = bindActionCreators(
     configActionCreators,
+    dispatch
+  );
+  const { _resolveUserLogin, _userLogout } = bindActionCreators(
+    userActionCreators,
     dispatch
   );
   const [openMenuMobile, setOpenMenuMobile] = useState<boolean>(false);
@@ -35,9 +40,10 @@ const Navbar: React.FC<{}> = () => {
             ? res.data
             : configDataResponse.navbar
         ))
-        .catch((err) => _rejectGetConfigAction({ status: err.response.status, code: err.code, message: err.message }))
+        .catch((err) => _rejectGetConfigAction({ status: err.response?.status, code: err.code, message: err.message }))
     };
-    !config.loaded && getConfigData()
+    !config.loaded && getConfigData();
+    localStorage.getItem("isAuthentication") && _resolveUserLogin()
   }, [])
 
   return (
@@ -53,10 +59,10 @@ const Navbar: React.FC<{}> = () => {
 
       <header className="relative bg-white">
         <BannerInNavbar
-          show={config.banners.navbar.show}
-          message={config.banners.navbar.message}
-          type={config.banners.navbar.type}
-          href={config.banners.navbar.href}
+          show={config.banners?.navbar?.show}
+          message={config.banners?.navbar?.message}
+          type={config.banners?.navbar?.type}
+          href={config.banners?.navbar?.href}
           setDismiss={() => _setBannerInNavbarDismissAction()}
         />
 
@@ -102,27 +108,33 @@ const Navbar: React.FC<{}> = () => {
               {/* Signin | signup */}
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <Link to="/login" data-testid={TestId.button.nav.login} className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                    Sign in
-                  </Link>
+                  {
+                    user.isAuthentication
+                      ? <span onClick={() => _userLogout()} style={{ cursor: "pointer" }} data-testid={TestId.button.nav.logout} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                        Sign out
+                      </span>
+                      : <Link to="/login" data-testid={TestId.button.nav.login} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                        Sign in
+                      </Link>
+                  }
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   {/* <Link to="/signup" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Create account
                   </Link> */}
                 </div>
 
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <img
-                    className="inline-block h-7 w-7 rounded-full ring-2 ring-white"
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
-                    alt=""
-                  />
-                  {/* <Link to="#" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                  </Link> */}
-                </div>
+                {/* Avatar */}
+                {
+                  user.isAuthentication && (
+                    <div data-testid={TestId.button.nav.avatar} className="flex lg:ml-6">
+                      <img
+                        className="inline-block h-7 w-7 rounded-full ring-2 ring-white"
+                        src={user.avatar}
+                        alt=""
+                      />
+                    </div>
+                  )
+                }
 
                 {/* Carts */}
                 <div className="ml-4 flow-root lg:ml-6">

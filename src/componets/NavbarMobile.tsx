@@ -5,6 +5,10 @@ import { XIcon } from '@heroicons/react/outline'
 import { TestId } from "../constant/TestId";
 import { Link } from "react-router-dom";
 import LinkNavigation from "./LinkNavigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import * as userActionCreators from '../redux/actions/user-action';
+import { bindActionCreators } from "redux";
 
 interface navigationsProps {
   name: string;
@@ -16,6 +20,13 @@ interface NavbarMobileProps {
   navigations: Array<navigationsProps>
 }
 const NavbarMobile: React.FC<NavbarMobileProps> = ({ show, setClose, navigations }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state);
+  const { _userLogout } = bindActionCreators(
+    userActionCreators,
+    dispatch
+  );
+
   return (
     <Transition.Root show={show} as={Fragment}>
       <Dialog
@@ -72,14 +83,20 @@ const NavbarMobile: React.FC<NavbarMobileProps> = ({ show, setClose, navigations
 
             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
               <div className="flow-root">
-                <Link
-                  onClick={setClose}
-                  to="/login"
-                  data-testid={TestId.button.nav.login}
-                  className="-m-2 p-2 block font-medium text-gray-900"
-                >
-                  Sign in
-                </Link>
+                {
+                  user.isAuthentication
+                    ? <span onClick={() => (_userLogout(), setClose())} style={{ cursor: "pointer" }} data-testid={TestId.button.nav.logout} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                      Sign out
+                    </span>
+                    : <Link
+                      onClick={setClose}
+                      to="/login"
+                      data-testid={TestId.button.nav.login}
+                      className="-m-2 p-2 block font-medium text-gray-900"
+                    >
+                      Sign in
+                    </Link>
+                }
               </div>
               {/* <div className="flow-root">
                   <Link to="#" className="-m-2 p-2 block font-medium text-gray-900">
