@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TestId } from "../../../constant/TestId";
@@ -7,14 +7,16 @@ import { RootState } from "../../../redux/store";
 const DashboardCheckout: React.FC<{}> = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state);
+  const [renderCheckout, setRenderCheckout] = useState<boolean>(false);
 
   useEffect(() => {
     !user.isAuthentication && navigate(-1)
-  }, []);
-
-  useEffect(() => {
-    !user.isAuthentication && navigate(-1)
+    user.isAuthentication && setRenderCheckout(true)
   }, [user.isAuthentication]);
+
+  if (!renderCheckout) {
+    return null
+  };
 
   return (
     <div className="relative bg-white overflow-hidden">

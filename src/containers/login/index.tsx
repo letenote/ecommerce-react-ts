@@ -16,6 +16,7 @@ const Login: React.FC<{}> = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [getLogin, setGetLogin] = useState<boolean>(false);
+  const [renderForm, setRenderForm] = useState<boolean>(false);
 
   const { _resolveUserLogin, _rejectUserLogin } = bindActionCreators(
     userActionCreators,
@@ -23,7 +24,8 @@ const Login: React.FC<{}> = () => {
   );
 
   useEffect(() => {
-    user.isAuthentication && navigate(-1)
+    user.isAuthentication && navigate(-1) && setRenderForm(false)
+    !user.isAuthentication && setRenderForm(true)
   }, [])
 
   const signinHandler = async (evt: { preventDefault: () => void; }) => {
@@ -43,6 +45,10 @@ const Login: React.FC<{}> = () => {
         setTimeout(() => setGetLogin(false), 1000)
       ));
   };
+
+  if (!renderForm) {
+    return null
+  }
 
   return (
     <>

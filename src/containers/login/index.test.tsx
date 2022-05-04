@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { render } from "../../test-utils";
+import { render, screen } from "../../test-utils";
 import Login from "./index";
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { TestId } from '../../constant/TestId';
 import { act } from 'react-test-renderer';
 import Layout from '../../componets/Layout';
+import { RenderResult } from '@testing-library/react';
 
 const { button, form } = TestId
 
@@ -190,7 +191,6 @@ describe("__LOGIN_CONTAINER_USER_LOGIN_SIMULATE", () => {
 
   test("After user login, must be render link 'Sign out' and 'avatar' in navbar", async () => {
     jest.useFakeTimers();
-    jest.spyOn(axios, 'get').mockResolvedValue({})
     const wrapper = render(
       <BrowserRouter>
         <Layout>
@@ -199,8 +199,6 @@ describe("__LOGIN_CONTAINER_USER_LOGIN_SIMULATE", () => {
       </BrowserRouter>
     );
 
-    const signinButton = wrapper.getByTestId(button.container.login.submit_login);
-    fireEvent.click(signinButton);
     act(() => {
       jest.advanceTimersByTime(500);
     });
@@ -215,8 +213,6 @@ describe("__LOGIN_CONTAINER_USER_LOGIN_SIMULATE", () => {
   })
 
   test("User logout, must be render link 'Sign in' and not render 'avatar' in navbar", async () => {
-    jest.useFakeTimers();
-    jest.spyOn(axios, 'get').mockResolvedValue({})
     const wrapper = render(
       <BrowserRouter>
         <Layout>
@@ -225,22 +221,14 @@ describe("__LOGIN_CONTAINER_USER_LOGIN_SIMULATE", () => {
       </BrowserRouter>
     );
 
-    const signinButton = wrapper.getByTestId(button.container.login.submit_login);
-    fireEvent.click(signinButton);
-    act(() => {
-      jest.advanceTimersByTime(500);
-    });
+    const signOutNavigator = wrapper.getByTestId(button.nav.logout);
+    fireEvent.click(signOutNavigator);
+    expect(wrapper.queryByTestId(button.nav.logout)).toBeNull();
 
-    await waitFor(() => {
-      const signOutNavigator = wrapper.getByTestId(button.nav.logout);
-      fireEvent.click(signOutNavigator);
-      expect(wrapper.queryByTestId(button.nav.logout)).toBeNull();
+    const signInNavigator = wrapper.queryByTestId(button.nav.login);
+    expect(signInNavigator).not.toBeNull();
 
-      const signInNavigator = wrapper.queryByTestId(button.nav.login);
-      expect(signInNavigator).not.toBeNull();
-
-      const avatarNavigator = wrapper.queryByTestId(button.nav.avatar);
-      expect(avatarNavigator).toBeNull();
-    });
+    const avatarNavigator = wrapper.queryByTestId(button.nav.avatar);
+    expect(avatarNavigator).toBeNull();
   })
 })
