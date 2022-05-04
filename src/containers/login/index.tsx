@@ -23,7 +23,7 @@ const Login: React.FC<{}> = () => {
   );
 
   useEffect(() => {
-    localStorage.getItem('isAuthentication') && navigate(-1)
+    user.isAuthentication && navigate(-1)
   }, [])
 
   const signinHandler = async (evt: { preventDefault: () => void; }) => {

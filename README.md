@@ -1,5 +1,6 @@
 # ecommerce-react-ts
 
 ecommerce using : react typescript, redux, tailwind, jest - rtl.
+unit test coverage > 80%.
 
-https://quizzical-bassi-623f2e.netlify.app/
+DEMO : https://quizzical-bassi-623f2e.netlify.app/

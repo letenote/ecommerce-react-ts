@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { TestId } from "../../../constant/TestId";
+import { RootState } from "../../../redux/store";
 
 const DashboardCheckout: React.FC<{}> = () => {
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state);
+
+  useEffect(() => {
+    !user.isAuthentication && navigate(-1)
+  }, []);
+
+  useEffect(() => {
+    !user.isAuthentication && navigate(-1)
+  }, [user.isAuthentication]);
 
   return (
     <div className="relative bg-white overflow-hidden">
@@ -16,39 +29,3 @@ const DashboardCheckout: React.FC<{}> = () => {
 };
 
 export default DashboardCheckout;
-
-// import React from 'react';
-// import axios from 'axios';
-// import { waitFor } from '@testing-library/dom';
-// import { render } from "../../../test-utils";
-// import DashboardCheckout from './index'
-// import { BrowserRouter } from 'react-router-dom';
-
-// jest.mock('axios');
-// beforeEach(() => {
-//   jest.clearAllMocks()
-// })
-
-// test('show name', async () => {
-//   jest.spyOn(axios, 'get').mockResolvedValue({
-//     data: {
-//       title: 'delectus aut autem'
-//     }
-//   })
-//   const wrapper = render(
-//     <BrowserRouter>
-//       <DashboardCheckout />
-//     </BrowserRouter>
-//   );
-//   await waitFor(() => expect(wrapper.queryAllByText('delectus aut autem')).toHaveLength(1));
-// });
-
-// test('show name error', async () => {
-//   jest.spyOn(axios, 'get').mockRejectedValue(() => ({}));
-//   const wrapper = render(
-//     <BrowserRouter>
-//       <DashboardCheckout />
-//     </BrowserRouter>
-//   );
-//   await waitFor(() => expect(wrapper.queryByText("error")).toBeInTheDocument());
-// });
