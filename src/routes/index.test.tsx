@@ -3,6 +3,7 @@ import App from "../App";
 import { act, render, screen } from "../test-utils";
 import userEvent from '@testing-library/user-event';
 import { TestId } from '../constant/TestId';
+import { waitFor } from "@testing-library/dom";
 
 const renderWithRoutes = ({ route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route)
@@ -21,7 +22,7 @@ describe("__ROUTES_FORCE_NAVIGATING_WITH_LAZY", () => {
     expect(lazyHome).toBeInTheDocument();
   });
 
-  it("app => login, force navigating then lazy rendering", async () => {
+  it("app => login, force navigating then lazy rendering, before user login", async () => {
     await act(async () => {
       renderWithRoutes({ route: '/login' });
     });
@@ -47,13 +48,18 @@ describe("__ROUTES_FORCE_NAVIGATING_WITH_LAZY", () => {
     expect(lazyProductDetail).toBeInTheDocument();
   });
 
-  it("app => checkout, force navigating then lazy rendering", async () => {
+  it("app => checkout, force navigating then lazy rendering, but user not login then navigate goback to product detail page", async () => {
     await act(async () => {
       renderWithRoutes({ route: '/checkout' })
     });
 
-    const lazyCheckout = await screen.findByText(containers.checkout.value);
-    expect(lazyCheckout).toBeInTheDocument();
+    await waitFor(async () => {
+      const lazyCheckout = await screen.queryByTestId(containers.checkout.id);
+      expect(lazyCheckout).toBeNull();
+
+      const lazyProductDetail = await screen.queryByTestId(containers.product.id);
+      expect(lazyProductDetail).not.toBeNull();
+    })
   });
 
   it("app => 404, force navigating then lazy rendering bad page", async () => {
@@ -147,6 +153,20 @@ describe("__ROUTES_NAVIGATING_BY_USER_CLICK", () => {
     // and then redirect to "checkout" page
     userEvent.click(screen.getByTestId(button.nav.checkout));
     expect(screen.getByTestId(containers.checkout.id)).toHaveTextContent(containers.checkout.value);
+  });
+
+  it("after in 'checkout' page, user force navigating to 'login' page, after user login then navigate goback to 'checkout' page", async () => {
+    await act(async () => {
+      renderWithRoutes({ route: '/login' });
+    });
+
+    await waitFor(async () => {
+      const lazyLogin = await screen.queryByTestId(containers.login.id);
+      expect(lazyLogin).toBeNull();
+
+      const lazyFallback404 = await screen.queryByTestId(containers.checkout.id);
+      expect(lazyFallback404).not.toBeNull();
+    })
   });
 
 
