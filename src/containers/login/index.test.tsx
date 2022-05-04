@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { TestId } from '../../constant/TestId';
 import { act } from 'react-test-renderer';
+import Layout from '../../componets/Layout';
 
 const { button, form } = TestId
 
@@ -30,6 +31,22 @@ describe("__LOGIN_CONTAINER", () => {
     expect(signinButtonSubmit).toBeInTheDocument();
     expect(signinButtonSubmit).toHaveAttribute("type", "submit");
   });
+
+  test("Before user login, must be render link 'Sign in' and not render 'avatar' in navbar", () => {
+    const { queryByTestId } = render(
+      <BrowserRouter>
+        <Layout>
+          <Login />
+        </Layout>
+      </BrowserRouter>
+    );
+
+    const signInNavigator = queryByTestId(button.nav.login);
+    expect(signInNavigator).not.toBeNull()
+
+    const avatarNavigator = queryByTestId(button.nav.avatar);
+    expect(avatarNavigator).toBeNull()
+  })
 
   test("the form shoudl be invalid - there's a required input with no value", () => {
     const { getByTestId } = render(
@@ -107,6 +124,10 @@ describe("__LOGIN_CONTAINER_FIELD_TEST", () => {
 });
 
 describe("__LOGIN_CONTAINER_USER_LOGIN_SIMULATE", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   test("after form is valid, simulate click button SignIn, then text in button has change and button is disabled", () => {
     const { getByTestId, queryByText } = render(
       <BrowserRouter>
@@ -166,4 +187,60 @@ describe("__LOGIN_CONTAINER_USER_LOGIN_SIMULATE", () => {
       expect(wrapper.queryByText(/login success/i)).toBeInTheDocument()
     });
   });
+
+  test("After user login, must be render link 'Sign out' and 'avatar' in navbar", async () => {
+    jest.useFakeTimers();
+    jest.spyOn(axios, 'get').mockResolvedValue({})
+    const wrapper = render(
+      <BrowserRouter>
+        <Layout>
+          <Login />
+        </Layout>
+      </BrowserRouter>
+    );
+
+    const signinButton = wrapper.getByTestId(button.container.login.submit_login);
+    fireEvent.click(signinButton);
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+
+    await waitFor(() => {
+      const signInNavigator = wrapper.queryByTestId(button.nav.logout);
+      expect(signInNavigator).not.toBeNull()
+
+      const avatarNavigator = wrapper.queryByTestId(button.nav.avatar);
+      expect(avatarNavigator).not.toBeNull()
+    });
+  })
+
+  test("User logout, must be render link 'Sign in' and not render 'avatar' in navbar", async () => {
+    jest.useFakeTimers();
+    jest.spyOn(axios, 'get').mockResolvedValue({})
+    const wrapper = render(
+      <BrowserRouter>
+        <Layout>
+          <Login />
+        </Layout>
+      </BrowserRouter>
+    );
+
+    const signinButton = wrapper.getByTestId(button.container.login.submit_login);
+    fireEvent.click(signinButton);
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+
+    await waitFor(() => {
+      const signOutNavigator = wrapper.getByTestId(button.nav.logout);
+      fireEvent.click(signOutNavigator);
+      expect(wrapper.queryByTestId(button.nav.logout)).toBeNull();
+
+      const signInNavigator = wrapper.queryByTestId(button.nav.login);
+      expect(signInNavigator).not.toBeNull();
+
+      const avatarNavigator = wrapper.queryByTestId(button.nav.avatar);
+      expect(avatarNavigator).toBeNull();
+    });
+  })
 })

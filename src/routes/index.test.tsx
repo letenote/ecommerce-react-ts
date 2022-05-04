@@ -109,8 +109,29 @@ describe("__ROUTES_NAVIGATING_BY_USER_CLICK", () => {
     expect(screen.getByTestId(containers.login.id)).toHaveTextContent(containers.login.value);
   });
 
-  it('landing on carts modal then checkout page triger by user', async () => {
+  it('landing on carts modal then to "login" page triger by user, because user not login', async () => {
     await act(async () => {
+      localStorage.removeItem('isAuthentication');
+      render(<App />);
+    });
+
+    // makesure current in "login" page
+    expect(screen.getByText(containers.login.value)).toBeInTheDocument();
+
+    // simulate open "cart" modal
+    // and then "cart" modal is open
+    userEvent.click(screen.getByTestId(button.modal.carts.open));
+    expect(screen.getByTestId(components.carts.id)).toHaveTextContent(components.carts.value);
+
+    // then simulate user click menu "Sign in" in "cart" modal
+    // and then redirect to "Login" page
+    userEvent.click(screen.getByTestId(button.nav.login));
+    expect(screen.getByTestId(containers.login.id)).toHaveTextContent(containers.login.value);
+  });
+
+  it('landing on carts modal then to "checkout" page triger by user, because user already login', async () => {
+    await act(async () => {
+      localStorage.setItem('isAuthentication', JSON.stringify(true));
       render(<App />);
     });
 

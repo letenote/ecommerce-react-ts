@@ -12,6 +12,8 @@ export const TestId = {
       home: "nav-home",
       stores: "nav-stores",
       login: "nav-login",
+      avatar: "nav-avatar",
+      logout: "nav-logout",
       checkout: "nav-checkout",
       bannerDismiss: "nav-banner-dismiss"
     },

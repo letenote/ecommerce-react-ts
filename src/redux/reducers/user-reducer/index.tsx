@@ -35,6 +35,18 @@ export const userReducer = (state: userReducerInterface = initialState, action: 
           code: action.payload.code,
           message: action.payload.message
         }
+      };
+
+    case userActionTypes.USER_LOGOUT:
+      return {
+        name: "",
+        avatar: "",
+        isAuthentication: false,
+        fetch: {
+          status: 0,
+          code: "",
+          message: ""
+        }
       }
     default:
       return state

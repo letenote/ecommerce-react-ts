@@ -31,3 +31,12 @@ export const _rejectUserLogin = (fetchStatus: FetchStatus) => {
     });
   };
 };
+
+export const _userLogout = () => {
+  localStorage.removeItem('isAuthentication');
+  return (dispatch: Dispatch<userActionInterface>) => {
+    dispatch({
+      type: userActionTypes.USER_LOGOUT
+    });
+  };
+};
