@@ -1,4 +1,12 @@
 export const TestId = {
+  form: {
+    login: {
+      signin_form_node: "signin_form_node",
+      signin_email_field_input: "signin_email_field_input",
+      signin_password_field_input: "signin_password_field_input",
+      signin_form_not_falid_message: "*Please fill out the form"
+    }
+  },
   button: {
     nav: {
       home: "nav-home",
@@ -23,6 +31,9 @@ export const TestId = {
         add_cart_button: "add_cart_button",
         add_cart_button_title: "Masukan Ke Keranjang",
         sizeValidationMessage: "* Kamu Belum Mimilih Size"
+      },
+      login: {
+        submit_login: "submit_login"
       }
     }
   },

@@ -1,11 +1,23 @@
 import { userActionTypes } from '../action-types/userActionTypes';
 import { Product } from '../../../../models/Product';
 
-interface userLoginInterface {
-  type: userActionTypes.USER_LOGIN,
+interface rejectUserLoginInterface {
+  type: userActionTypes.USER_LOGIN_WITH_REJECT,
   payload: {
-    email: string,
-    password: string
+    status: number,
+    code: string,
+    message: string
+  }
+}
+
+interface resolveUserLoginInterface {
+  type: userActionTypes.USER_LOGIN_WITH_RESOLVE,
+  payload: {
+    name: string,
+    avatar: string,
+    status: number,
+    code: string,
+    message: string
   }
 }
 
@@ -21,4 +33,4 @@ interface userSignupInterface {
   }
 }
 
-export type userActionInterface = userLoginInterface | userLogoutInterface | userSignupInterface 
+export type userActionInterface = resolveUserLoginInterface | rejectUserLoginInterface | userLogoutInterface | userSignupInterface 

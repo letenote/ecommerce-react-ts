@@ -1,4 +1,10 @@
 export interface userReducerInterface {
-  name: string;
-  isAuthentication: boolean;
+  name: string,
+  avatar: string,
+  isAuthentication: boolean,
+  fetch: {
+    status: number,
+    code: string,
+    message: string
+  }
 };
